@@ -98,7 +98,7 @@ test('footer links: about and contacts on every page, legal after them', async (
   for (const page of ['index.html', 'products/mentorship/index.html']) {
     const footer = readOut(page).match(/<footer class="site-footer">[^]*?<\/footer>/)[0];
     const labels = [...footer.matchAll(/<li><a href="[^"]+">([^<]+)<\/a><\/li>/g)].map((m) => m[1]).filter((l) => l !== 'На головну');
-    assert.deepEqual(labels, ['Про клуб', 'Контакти', 'Оферта'], page);
+    assert.deepEqual(labels, ['Про клуб', 'Контакти', 'Оферта', 'Конфіденційність'], page);
   }
 });
 

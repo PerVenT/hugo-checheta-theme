@@ -1,7 +1,7 @@
 <footer class="site-footer">
   <div class="container site-footer__inner">
     <ul class="site-footer__links">
-      {{- if not .IsHome }}<li><a href="{{ "/" | relURL }}">{{ i18n "go_home" }}</a></li>{{ end }}
+      {{- if not .IsHome }}<li><a href="{{ site.Home.RelPermalink }}">{{ i18n "go_home" }}</a></li>{{ end }}
       {{- range site.Menus.footer }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
       {{- range site.Menus.legal }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
     </ul>

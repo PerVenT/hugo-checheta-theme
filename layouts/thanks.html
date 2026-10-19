@@ -24,7 +24,7 @@
     <div id="tg-confirm"><a class="btn btn--block" href="https://t.me/{{ . }}" data-umami-event="tg-confirm-click">{{ i18n "thanks_tg_confirm" }}</a></div>
     {{- end }}
     {{- with $url }}
-    <a class="btn{{ if $bot }} btn--ghost{{ end }}" href="{{ . | relURL }}" data-umami-event="thanks-cta-click">{{ $label }}</a>
+    <a class="btn{{ if $bot }} btn--ghost{{ end }}" href="{{ strings.TrimPrefix "/" . | relURL }}" data-umami-event="thanks-cta-click">{{ $label }}</a>
     {{- end }}
   </div>
 </main>

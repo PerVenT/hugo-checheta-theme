@@ -138,3 +138,17 @@ test('product image is found by id (light and -dark); front matter image overrid
   assert.doesNotMatch(site.read('products/b/index.html'), /product__media/);
   site.cleanup();
 });
+
+test('site in a subfolder (GitHub Pages): every local link and font stays under baseURL', () => {
+  const sub = buildVariant({ config: 'baseURL: https://example.org/demo/\n' });
+  assert.equal(sub.err, '');
+  for (const page of ['index.html', 'links/index.html', 'products/webinar/index.html', 'lessons/index.html', '404.html']) {
+    const html = sub.read(page);
+    const local = [...html.matchAll(/\s(?:href|src)="(\/[^"]*)"/g)].map((m) => m[1]);
+    assert.ok(local.length > 0, page);
+    assert.deepEqual(local.filter((u) => !u.startsWith('/demo/')), [], page);
+  }
+  const css = sub.read(sub.read('index.html').match(/<link rel="stylesheet" href="\/demo\/([^"]+)"/)[1]);
+  assert.doesNotMatch(css, /url\(\/fonts\//);
+  sub.cleanup();
+});

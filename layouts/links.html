@@ -3,7 +3,7 @@
   {{- $name := site.Params.brand | default site.Title }}
   <header class="links__profile">
     {{- with .Params.avatar | default site.Params.avatar }}
-    <a class="links__home" href="{{ "/" | relURL }}" aria-label="{{ i18n "go_home" }}">
+    <a class="links__home" href="{{ site.Home.RelPermalink }}" aria-label="{{ i18n "go_home" }}">
       {{ partial "img.html" (dict "src" . "alt" $name "eager" true "widths" (slice 192 288) "sizes" "96px" "class" "links__avatar") }}
     </a>
     {{- end }}
@@ -21,7 +21,7 @@
     <li><a class="btn btn--block links__btn" href="{{ .RelPermalink }}" data-umami-event="links-click" data-umami-event-target="{{ .Params.id }}">{{ if .Params.pinned }}{{ partial "pin.html" }}{{ end }}{{ .Title }}{{ with $label }}<small>{{ . }}</small>{{ end }}</a></li>
     {{- end }}
     {{- range .Params.links }}
-    <li><a class="btn btn--block btn--ghost links__btn" href="{{ .url | relURL }}" data-umami-event="links-click" data-umami-event-target="{{ .label }}">{{ .label }}</a></li>
+    <li><a class="btn btn--block btn--ghost links__btn" href="{{ strings.TrimPrefix "/" .url | relURL }}" data-umami-event="links-click" data-umami-event-target="{{ .label }}">{{ .label }}</a></li>
     {{- end }}
     {{- with site.Params.telegram_channel }}
     <li><a class="btn btn--block btn--ghost links__btn" href="{{ . }}" data-umami-event="links-click" data-umami-event-target="telegram">{{ i18n "links_telegram" }}</a></li>

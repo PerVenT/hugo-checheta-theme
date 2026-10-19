@@ -1,0 +1,11 @@
+{{- /* YouTube video id from a page's youtube_id: the 11-character id or any common YouTube URL; "" if none matches. */ -}}
+{{- $raw := trim (string .Params.youtube_id) " " -}}
+{{- $id := "" -}}
+{{- if findRE `^[\w-]{11}$` $raw -}}
+  {{- $id = $raw -}}
+{{- else -}}
+  {{- with findRESubmatch `(?:youtu\.be/|[?&]v=|/embed/|/shorts/|/live/)([\w-]{11})` $raw 1 -}}
+    {{- $id = index (index . 0) 1 -}}
+  {{- end -}}
+{{- end -}}
+{{- return $id -}}

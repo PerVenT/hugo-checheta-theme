@@ -18,7 +18,6 @@ params:
   description: Клуб для тих, хто любить спостерігати за дикими звірами Карпат, — курси, вебінари, нічні квести й безкоштовні уроки.
   brand: Лісові звірі Карпат
   role: Клуб спостерігачів за звірами
-  og_image: images/og.jpg
   telegram:
     username: zviri_example
   telegram_channel: https://t.me/zviri_example_channel
@@ -57,3 +56,6 @@ menus:
     - name: Оферта
       url: /offer/
       weight: 1
+    - name: Конфіденційність
+      url: /privacy/
+      weight: 2

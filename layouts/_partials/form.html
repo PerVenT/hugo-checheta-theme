@@ -14,7 +14,7 @@
     <label class="field"><span>{{ i18n "field_contact" }}</span><input name="contact" autocomplete="email" required></label>
     {{- end }}
     <label class="field field--hp" aria-hidden="true"><span>Website</span><input name="website" tabindex="-1" autocomplete="off"></label>
-    <label class="consent"><input type="checkbox" name="consent" value="yes" required> <span>{{ i18n "field_consent" (dict "url" ($privacy | relURL)) | safeHTML }}</span></label>
+    <label class="consent"><input type="checkbox" name="consent" value="yes" required> <span>{{ i18n "field_consent" (dict "url" (strings.TrimPrefix "/" $privacy | relURL)) | safeHTML }}</span></label>
     <button class="btn btn--block" type="submit">{{ i18n (printf "form_%s_submit" $type) }}</button>
   </div>
   <p class="form__success" data-form-success hidden role="status">{{ i18n (printf "form_%s_success" $type) }}</p>

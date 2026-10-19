@@ -1,12 +1,19 @@
 {{- $title := cond .IsHome site.Title (printf "%s · %s" .Title site.Title) -}}
 {{- $desc := or .Description .Params.lead site.Params.description | plainify | truncate 160 -}}
 {{- $img := "" -}}
-{{- /* Link preview: og_image from front matter, else a product's own image cropped to 1200x630, else the site's. */ -}}
-{{- with .Params.og_image }}{{ $img = . | absURL }}{{ end -}}
+{{- /* Link preview: og_image from front matter, else a product's own image cropped to 1200x630
+     or a lesson's YouTube cover, else params.og_image, else the home hero image cropped the same way. */ -}}
+{{- with .Params.og_image }}{{ $img = strings.TrimPrefix "/" . | absURL }}{{ end -}}
 {{- if and (not $img) .IsPage (eq .Section "products") -}}
   {{- with (partial "product/images.html" .).light }}{{ with resources.Get . }}{{ $img = (.Fill "1200x630 Center jpg q85").Permalink }}{{ end }}{{ end -}}
 {{- end -}}
-{{- if not $img }}{{ with site.Params.og_image }}{{ $img = . | absURL }}{{ end }}{{ end -}}
+{{- if and (not $img) .IsPage (eq .Section "lessons") -}}
+  {{- with partial "youtube-id.html" . }}{{ $img = printf "https://i.ytimg.com/vi/%s/hqdefault.jpg" . }}{{ end -}}
+{{- end -}}
+{{- if not $img }}{{ with site.Params.og_image }}{{ $img = strings.TrimPrefix "/" . | absURL }}{{ end }}{{ end -}}
+{{- if not $img -}}
+  {{- with site.Home.Params.hero.image }}{{ with resources.Get . }}{{ $img = (.Fill "1200x630 Center jpg q85").Permalink }}{{ end }}{{ end -}}
+{{- end -}}
 <title>{{ $title }}</title>
 {{- if or (eq .Layout "thanks") .Params.noindex }}
 <meta name="robots" content="noindex">

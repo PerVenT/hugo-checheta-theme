@@ -11,7 +11,7 @@
   <div class="hero__text">
     {{- with .label }}<p class="card__label">{{ . }}</p>{{ end }}
     <h1 class="hero__title">{{ .title }}{{ with .accent }} <em>{{ . }}</em>{{ end }}</h1>
-    {{- with .cta }}<a class="btn" href="{{ .url | relURL }}">{{ .label }}</a>{{ end }}
+    {{- with .cta }}<a class="btn" href="{{ strings.TrimPrefix "/" .url | relURL }}">{{ .label }}</a>{{ end }}
   </div>
 </section>
 {{- end -}}

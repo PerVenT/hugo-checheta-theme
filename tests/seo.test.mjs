@@ -33,12 +33,16 @@ test('SEO basics on home page', async () => {
   assert.match(html, /<meta name="description" content="[^"]+"/);
 });
 
-test('og:image: product image cropped for previews, site image elsewhere', async () => {
+test('og:image: product image cropped for previews, lesson YouTube cover, home hero elsewhere', async () => {
   await buildSite();
   const og = (path) => readOut(path).match(/<meta property="og:image" content="([^"]+)"/)?.[1];
   assert.match(og('products/mentorship/index.html'), /^https:\/\/example\.org\/images\/products\/slidopyt-6-tyzhniv_hu_[^"]+\.jpg$/);
-  assert.equal(og('products/bare/index.html'), 'https://example.org/images/og.jpg');
-  assert.equal(og('contacts/index.html'), 'https://example.org/images/og.jpg');
+  const hero = /^https:\/\/example\.org\/images\/hero-light_hu_[^"]+\.jpg$/;
+  assert.match(og('products/bare/index.html'), hero);
+  assert.match(og('contacts/index.html'), hero);
+  assert.match(og('index.html'), hero);
+  assert.equal(og('lessons/urok-1/index.html'), 'https://i.ytimg.com/vi/M7lc1UVf-VE/hqdefault.jpg');
+  assert.equal(og('lessons/urok-2/index.html'), 'https://i.ytimg.com/vi/aqz-KE-bpKQ/hqdefault.jpg');
 });
 
 test('robots.txt and 404 are built', async () => {

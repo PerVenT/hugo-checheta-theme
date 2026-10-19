@@ -1,15 +1,8 @@
 {{- /* Lite YouTube player: a cover link to youtube.com that youtube.mjs swaps for a youtube-nocookie iframe on click.
      Params: page. youtube_id may be the 11-character id or any common YouTube URL; anything else fails the build. */ -}}
 {{- $p := .page -}}
+{{- $id := partial "youtube-id.html" $p -}}
 {{- $raw := trim (string $p.Params.youtube_id) " " -}}
-{{- $id := "" -}}
-{{- if findRE `^[\w-]{11}$` $raw -}}
-  {{- $id = $raw -}}
-{{- else -}}
-  {{- with findRESubmatch `(?:youtu\.be/|[?&]v=|/embed/|/shorts/|/live/)([\w-]{11})` $raw 1 -}}
-    {{- $id = index (index . 0) 1 -}}
-  {{- end -}}
-{{- end -}}
 {{- if not $id -}}
   {{- errorf "%s" (i18n "youtube_bad_id" (dict "file" $p.File.Path "value" $raw)) -}}
 {{- else -}}

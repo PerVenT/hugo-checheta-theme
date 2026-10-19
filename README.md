@@ -1,8 +1,12 @@
 # hugo-checheta-theme
 
+![Головна демо: ліворуч світла тема, праворуч темна](images/screenshot.png)
+
 Hugo-тема (модуль) для сайту-воронки: програми, курси, вебінари й події з оплатою, листом очікування, безкоштовними уроками й сторінкою `/links` для соцмереж. Світла й темна теми, без cookies, тексти українською.
 
-Демо в `exampleSite/` — вигаданий клуб «Лісові звірі Карпат»: по одній сторінці кожного типу з усіма заповненими полями. Запуск: `hugo server --source exampleSite`.
+**Демо: <https://pervent.github.io/hugo-checheta-theme/>** — вигаданий клуб «Лісові звірі Карпат» з `exampleSite/`: по одній сторінці кожного типу з усіма заповненими полями. Локально: `hugo server --source exampleSite`. Демо публікується на GitHub Pages після зелених тестів на `main` (`.github/workflows/demo.yml`).
+
+Тема працює й у підпапці (як демо на GitHub Pages): посилання в `menus`, `links`, `hero.cta` пиши від кореня сайту (`/about/`), тема сама додасть шлях з `baseURL`; у markdown-тексті сторінок — відносні посилання (`../contacts/`).
 
 ## Підключення
 
@@ -46,7 +50,7 @@ git config core.hooksPath .githooks
 | Сторінка | Як підключити | Поля |
 | --- | --- | --- |
 | Продукт | файл у `content/products/` | див. «Поля продукту» нижче |
-| Уроки | `content/lessons/_index.md` + файл на урок | `id`, `youtube_id` (id або будь-яке посилання YouTube), `lead`, `weight` |
+| Уроки | `content/lessons/_index.md` + файл на урок | `id`, `youtube_id` (id або будь-яке посилання YouTube), `lead`, `weight`; обкладинка відео — і прев'ю посилання (`og_image` перевизначає) |
 | «Дякую» | `layout: thanks` | `kind: payment` або `registration`, `lead`, `cta: {label, url}` (необов'язково); `sitemap: {disable: true}` |
 | Юридична | `layout: legal` | `draft_legal: true` — банер «Чернетка» |
 | Про мене | `layout: about` | `image`, `image_dark`, `lead` |
@@ -72,7 +76,7 @@ git config core.hooksPath .githooks
 | `price`, `payment: {mode, url}` | Ціна в грн на кнопці; посилання на кнопку WayForPay `https://secure.wayforpay.com/button/…`; `mode: link` — перехід на сторінку оплати, `widget` — оплата у вікні поверх сайту (без JS чи якщо віджет не завантажився — звичайний перехід), `checkout` — через `api.endpoint` (етап 3) |
 | `lead` | Короткий опис під заголовком, він же опис для пошуковиків |
 | `bonus`, `chips` | Рядок із подарунком і до 3 міток |
-| картинка | `assets/images/products/<id>.(jpg\|jpeg\|png\|webp)` і `<id>-dark.(…)` для темної теми підхоплюються самі; `image` / `image_dark` у front matter — щоб узяти інший файл. Світла картинка, обрізана до 1200×630, — і прев'ю посилання в соцмережах (`og_image` у front matter перевизначає, без картинки — `params.og_image` сайту) |
+| картинка | `assets/images/products/<id>.(jpg\|jpeg\|png\|webp)` і `<id>-dark.(…)` для темної теми підхоплюються самі; `image` / `image_dark` у front matter — щоб узяти інший файл. Світла картинка, обрізана до 1200×630, — і прев'ю посилання в соцмережах (`og_image` у front matter перевизначає, без картинки — `params.og_image` сайту або головне фото `hero.image`) |
 | `program[]: {title, text, items}` | Розгортувані блоки програми |
 | `audience[]`, `results[]` | Списки «Для кого» й «Що ти отримаєш» |
 | `testimonials[]: {image, name}` | Скриншоти відгуків (21:10) |
