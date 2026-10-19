@@ -4,6 +4,7 @@
 .product__intro h1{font-size:clamp(32px,6vw,48px);margin:6px 0 8px}
 .product__lead{margin:12px 0 0}
 .product__actions{display:grid;gap:10px;margin-top:var(--space-4)}
+.product__actions>.btn{display:flex;align-items:center;justify-content:center}
 .product__actions--bottom{margin:var(--space-10) auto}
 .countdown{margin:12px 0 0;font-size:14px;color:var(--c-ink-muted)}
 .countdown strong{color:var(--accent)}
