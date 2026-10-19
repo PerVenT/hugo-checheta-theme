@@ -1,0 +1,15 @@
+{{- /* Redirect page for a short link: no baseof, no analytics, the target page counts the visit with its UTM tags. */ -}}
+{{- $to := .Params.to -}}
+{{- if not (urls.Parse $to).IsAbs }}{{ $to = strings.TrimPrefix "/" $to | absURL }}{{ end -}}
+<!doctype html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+<meta charset="utf-8">
+<title>{{ site.Title }}</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="{{ $to }}">
+<meta http-equiv="refresh" content="0; url={{ $to }}">
+<script>location.replace({{ $to }})</script>
+</head>
+<body><a href="{{ $to }}">{{ site.Title }}</a></body>
+</html>

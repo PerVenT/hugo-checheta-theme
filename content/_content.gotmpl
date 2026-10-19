@@ -1,0 +1,19 @@
+{{- /* Short links from params.shortlinks ({slug: target}): /ig/ redirects to the target with its UTM tags.
+     Not listed anywhere and not in the sitemap. */ -}}
+{{- range $slug, $to := .Site.Params.shortlinks -}}
+  {{- if not (findRE `^[a-z0-9-]+$` $slug) -}}
+    {{- errorf "shortlinks: «%s» — лише малі латинські літери, цифри й дефіс" $slug -}}
+  {{- end -}}
+  {{- if not $to -}}
+    {{- errorf "shortlinks: «%s» — порожня адреса" $slug -}}
+  {{- end -}}
+  {{- $.AddPage (dict
+    "path" $slug
+    "kind" "page"
+    "title" $slug
+    "layout" "shortlink"
+    "params" (dict "to" $to)
+    "sitemap" (dict "disable" true)
+    "build" (dict "list" "never" "render" "always")
+  ) -}}
+{{- end -}}
