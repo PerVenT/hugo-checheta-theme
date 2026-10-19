@@ -1,0 +1,7 @@
+{{ define "main" }}
+<main class="container page">
+  <h1>{{ .Title }}</h1>
+  {{- with .Params.lead }}<p class="page__lead">{{ . }}</p>{{ end }}
+  <div class="prose">{{ .Content }}</div>
+</main>
+{{ end }}

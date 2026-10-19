@@ -1,0 +1,12 @@
+{{ define "main" }}
+<main>
+  <div class="container">{{ partial "hero.html" . }}</div>
+  {{- with partial "product/upcoming.html" (dict "limit" 6) }}
+  <section class="container section">
+    <h2>{{ i18n "home_programs" }}</h2>
+    <div class="grid">{{ range . }}{{ partial "product/card.html" . }}{{ end }}</div>
+  </section>
+  {{- end }}
+  {{- with .Content }}<div class="container prose section">{{ . }}</div>{{ end }}
+</main>
+{{ end }}

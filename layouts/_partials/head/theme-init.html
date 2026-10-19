@@ -1,0 +1,2 @@
+{{- $js := resources.Get "js/theme-init.mjs" | js.Build (dict "format" "iife" "minify" true "target" "es2019") -}}
+<script>{{ $js.Content | safeJS }}</script>

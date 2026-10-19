@@ -1,0 +1,17 @@
+{{- with .Params.hero -}}
+<section class="hero">
+  {{- with .image }}
+  <div class="hero__media">
+    {{ partial "img.html" (dict "src" . "alt" "" "eager" true "sizes" "(min-width: 1040px) 1008px, 100vw" "class" (cond (isset $.Params.hero "image_dark") "hero__img only-light" "hero__img")) }}
+    {{- with $.Params.hero.image_dark }}
+    {{ partial "img.html" (dict "src" . "alt" "" "sizes" "(min-width: 1040px) 1008px, 100vw" "class" "hero__img only-dark") }}
+    {{- end }}
+  </div>
+  {{- end }}
+  <div class="hero__text">
+    {{- with .label }}<p class="card__label">{{ . }}</p>{{ end }}
+    <h1 class="hero__title">{{ .title }}{{ with .accent }} <em>{{ . }}</em>{{ end }}</h1>
+    {{- with .cta }}<a class="btn" href="{{ .url | relURL }}">{{ .label }}</a>{{ end }}
+  </div>
+</section>
+{{- end -}}

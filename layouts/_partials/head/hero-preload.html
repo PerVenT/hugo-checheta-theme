@@ -1,0 +1,17 @@
+{{- /* Preloads only the hero image of the active theme (decided by the init script before this runs). */ -}}
+{{- with .Params.hero -}}
+{{- $sets := dict -}}
+{{- range $mode, $key := dict "light" "image" "dark" "image_dark" -}}
+  {{- with index $.Params.hero $key -}}
+    {{- with resources.Get . -}}
+      {{- $r := . -}}
+      {{- $s := slice -}}
+      {{- range slice 480 960 1440 }}{{ if le . $r.Width }}{{ $i := $r.Resize (printf "%dx webp q80" .) }}{{ $s = $s | append (printf "%s %dw" $i.RelPermalink $i.Width) }}{{ end }}{{ end -}}
+      {{- $sets = merge $sets (dict $mode (delimit $s ", ")) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with $sets -}}
+<script>(function(){var s={{ . | jsonify | safeJS }},t=document.documentElement.dataset.theme,v=s[t]||s.light;if(!v)return;var l=document.createElement("link");l.rel="preload";l.as="image";l.setAttribute("imagesrcset",v);l.setAttribute("imagesizes","(min-width: 1040px) 1008px, 100vw");document.head.appendChild(l)})()</script>
+{{- end -}}
+{{- end -}}

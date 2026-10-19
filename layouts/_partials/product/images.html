@@ -1,0 +1,13 @@
+{{- /* Product image paths {light, dark}. Front matter image / image_dark win; otherwise the file named by id is
+     picked up: assets/images/products/<id>.(jpg|jpeg|png|webp) and <id>-dark.(…) for the dark theme. */ -}}
+{{- $light := .Params.image -}}
+{{- $dark := .Params.image_dark -}}
+{{- with .Params.id -}}
+  {{- if not $light -}}
+    {{- with resources.GetMatch (printf "images/products/%s.{jpg,jpeg,png,webp}" .) }}{{ $light = .Name }}{{ end -}}
+  {{- end -}}
+  {{- if not $dark -}}
+    {{- with resources.GetMatch (printf "images/products/%s-dark.{jpg,jpeg,png,webp}" .) }}{{ $dark = .Name }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- return dict "light" $light "dark" $dark -}}

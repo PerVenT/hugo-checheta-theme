@@ -1,0 +1,19 @@
+{{- /* Contacts: buttons from site params (Telegram, channel, email), then the page body (e.g. FOP requisites). */ -}}
+{{ define "main" }}
+<main class="container page contacts">
+  <h1>{{ .Title }}</h1>
+  {{- with .Params.lead }}<p class="page__lead">{{ . }}</p>{{ end }}
+  <div class="contacts__actions">
+    {{- with site.Params.telegram.username }}
+    <a class="btn btn--block" href="https://t.me/{{ . }}" data-umami-event="talk-click" data-umami-event-product="contacts">{{ i18n "thanks_write" }}</a>
+    {{- end }}
+    {{- with site.Params.telegram_channel }}
+    <a class="btn btn--block btn--ghost" href="{{ . }}" data-umami-event="channel-click">{{ i18n "thanks_channel" }}</a>
+    {{- end }}
+    {{- with site.Params.email }}
+    <a class="btn btn--block btn--ghost" href="mailto:{{ . }}" data-umami-event="email-click">{{ . }}</a>
+    {{- end }}
+  </div>
+  {{- with .Content }}<div class="prose section">{{ . }}</div>{{ end }}
+</main>
+{{ end }}

@@ -1,0 +1,9 @@
+{{ define "main" }}
+<main class="container page">
+  {{- if .Params.draft_legal }}
+  <p class="legal-draft" role="note">{{ i18n "legal_draft" }}</p>
+  {{- end }}
+  <h1>{{ .Title }}</h1>
+  <div class="prose">{{ .Content }}</div>
+</main>
+{{ end }}

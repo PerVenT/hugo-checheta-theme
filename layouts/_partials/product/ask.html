@@ -1,0 +1,2 @@
+{{- /* Top-of-page "questions?" link: scrolls to the FAQ, or to the bottom actions with the talk button when there is no FAQ. */ -}}
+<a class="btn btn--block btn--ghost" href="#{{ cond (isset .Params "faq") "faq" "talk" }}" data-umami-event="ask-click" data-umami-event-product="{{ .Params.id }}">{{ i18n "ask" }}</a>

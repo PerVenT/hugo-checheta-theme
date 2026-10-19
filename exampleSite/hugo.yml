@@ -1,0 +1,59 @@
+timeZone: Europe/Kyiv
+baseURL: https://example.org/
+title: Лісові звірі Карпат
+locale: uk
+defaultContentLanguage: uk
+defaultContentLanguageInSubdir: false
+languages:
+  uk:
+    weight: 1
+    label: Українська
+disableKinds: [taxonomy, term]
+enableRobotsTXT: true
+module:
+  imports:
+    - path: github.com/PerVenT/hugo-checheta-theme
+  replacements: "github.com/PerVenT/hugo-checheta-theme -> ../.."
+params:
+  description: Клуб для тих, хто любить спостерігати за дикими звірами Карпат, — курси, вебінари, нічні квести й безкоштовні уроки.
+  brand: Лісові звірі Карпат
+  role: Клуб спостерігачів за звірами
+  og_image: images/og.jpg
+  telegram:
+    username: zviri_example
+  telegram_channel: https://t.me/zviri_example_channel
+  email: hello@example.org
+  api:
+    endpoint: ""
+  forms:
+    endpoint: ""
+  umami:
+    src: https://umami.example/script.js
+    id: test-site-id
+  gtag:
+    id: ""
+menus:
+  main:
+    - name: Програми
+      url: /products/
+      weight: 1
+    - name: Уроки
+      url: /lessons/
+      weight: 2
+    - name: Контакти
+      url: /contacts/
+      weight: 3
+    - name: Про клуб
+      url: /about/
+      weight: 4
+  footer:
+    - name: Про клуб
+      url: /about/
+      weight: 1
+    - name: Контакти
+      url: /contacts/
+      weight: 2
+  legal:
+    - name: Оферта
+      url: /offer/
+      weight: 1

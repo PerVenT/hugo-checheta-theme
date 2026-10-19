@@ -1,0 +1,6 @@
+{{ define "main" }}
+<main class="container page">
+  {{ partial "lesson.html" (dict "page" . "single" true) }}
+  {{- with .Content }}<div class="prose section">{{ . }}</div>{{ end }}
+</main>
+{{ end }}

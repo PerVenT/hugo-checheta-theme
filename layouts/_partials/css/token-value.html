@@ -1,0 +1,6 @@
+{{- /* Resolves a token value: "{name}" references become var(--c-name). */ -}}
+{{- $v := . -}}
+{{- if and (hasPrefix $v "{") (hasSuffix $v "}") -}}
+  {{- $v = printf "var(--c-%s)" (trim $v "{}") -}}
+{{- end -}}
+{{- return $v -}}

@@ -1,0 +1,9 @@
+{{- /* Emits --c-* declarations for one theme ("light" or "dark"); single-valued tokens only for light. */ -}}
+{{- $mode := . -}}
+{{- range hugo.Data.tokens.color.tokens -}}
+  {{- if reflect.IsMap .value -}}
+    --c-{{ .name }}:{{ partial "css/token-value.html" (index .value $mode) }};
+  {{- else if eq $mode "light" -}}
+    --c-{{ .name }}:{{ partial "css/token-value.html" .value }};
+  {{- end -}}
+{{- end -}}

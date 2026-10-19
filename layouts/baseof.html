@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+  {{- partial "limits/page.html" . }}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{ partial "head/theme-init.html" . }}
+  {{ partial "head/hero-preload.html" . }}
+  {{ partial "head/fonts.html" . }}
+  {{ partial "head/css.html" . }}
+  {{ partial "head/js.html" . }}
+  {{ partial "head/analytics.html" . }}
+  {{ partial "head/seo.html" . }}
+  {{ partial "head/icons.html" . }}
+</head>
+<body>
+  {{- $bare := eq .Layout "links" }}
+  {{- if not (or $bare .IsHome) }}{{ partial "header.html" . }}{{ end }}
+  {{ block "main" . }}{{ end }}
+  {{- if not $bare }}{{ partial "footer.html" . }}{{ end }}
+  {{ partial "theme-toggle.html" . }}
+</body>
+</html>

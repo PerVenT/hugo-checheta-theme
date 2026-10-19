@@ -1,0 +1,31 @@
+{{- /* Thank-you page after payment or registration. kind: payment|registration. CTA from front matter cta {label, url},
+     otherwise by kind: payment → params.telegram.username, registration → Telegram channel. #tg-confirm (stage 3) only with params.bot.username. */ -}}
+{{ define "main" }}
+{{- $kind := .Params.kind | default "registration" -}}
+{{- $bot := cond (eq $kind "payment") site.Params.bot.username "" -}}
+{{- $url := "" -}}
+{{- $label := cond (eq $kind "payment") (i18n "thanks_write") (i18n "thanks_channel") -}}
+{{- if eq $kind "payment" -}}
+  {{- with site.Params.telegram.username }}{{ $url = printf "https://t.me/%s" . }}{{ end -}}
+{{- else -}}
+  {{- with site.Params.telegram_channel }}{{ $url = . }}{{ end -}}
+{{- end -}}
+{{- with .Params.cta -}}
+  {{- with .url }}{{ $url = . }}{{ end -}}
+  {{- with .label }}{{ $label = . }}{{ end -}}
+{{- end -}}
+<main class="container page thanks">
+  <img class="thanks__icon" src="{{ "favicon.svg" | relURL }}" width="64" height="64" alt="">
+  <h1>{{ .Title }}</h1>
+  {{- with .Params.lead }}<p class="page__lead">{{ . }}</p>{{ end }}
+  {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  <div class="thanks__actions">
+    {{- with $bot }}
+    <div id="tg-confirm"><a class="btn btn--block" href="https://t.me/{{ . }}" data-umami-event="tg-confirm-click">{{ i18n "thanks_tg_confirm" }}</a></div>
+    {{- end }}
+    {{- with $url }}
+    <a class="btn{{ if $bot }} btn--ghost{{ end }}" href="{{ . | relURL }}" data-umami-event="thanks-cta-click">{{ $label }}</a>
+    {{- end }}
+  </div>
+</main>
+{{ end }}

@@ -1,0 +1,2 @@
+{{- $js := resources.Get "js/main.mjs" | js.Build (dict "format" "esm" "minify" true "target" "es2019") | fingerprint -}}
+<script type="module" src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>

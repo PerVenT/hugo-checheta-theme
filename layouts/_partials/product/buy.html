@@ -1,0 +1,23 @@
+{{- /* Main action by status: an open webinar registers, other open products pay; waitlist and closed below.
+     payment.mode "widget" opens the WayForPay widget over the page (the link still works without it);
+     "checkout" is used only when site.Params.api.endpoint is set. */ -}}
+{{- $p := .Params -}}
+{{- if and (eq $p.status "open") (eq $p.product_type "webinar") -}}
+  {{ partial "form.html" (dict "form" "webinar" "product" .) }}
+{{- else if eq $p.status "open" -}}
+  {{- with $p.payment -}}
+    {{- $checkout := and (eq .mode "checkout") site.Params.api.endpoint -}}
+    {{- $widget := eq .mode "widget" -}}
+    {{- with .url -}}
+    <a class="btn btn--block btn--pay" href="{{ . }}" data-umami-event="pay-click" data-umami-event-product="{{ $p.id }}"
+      {{- if $checkout }} data-checkout="{{ site.Params.api.endpoint }}"{{ end }}
+      {{- if $widget }} data-wfp-widget{{ end }}>{{ i18n "pay" }}{{ with $p.price }} · {{ . }} {{ i18n "currency_uah" }}{{ end }}</a>
+    {{- end -}}
+  {{- end -}}
+{{- else if eq $p.status "waitlist" -}}
+  {{ partial "form.html" (dict "form" "waitlist" "product" .) }}
+{{- else -}}
+  {{- with site.GetPage (site.Params.main_product | default "/products") }}
+  <a class="btn btn--block btn--ghost" href="{{ .RelPermalink }}">{{ i18n "closed_cta" }}</a>
+  {{- end -}}
+{{- end -}}

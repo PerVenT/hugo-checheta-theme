@@ -1,0 +1,20 @@
+{{- $dark := partial "css/token-vars.html" "dark" -}}
+{{- $darkComponents := "--card-bg:#12301F;--card-border:transparent;--btn-bg:var(--c-gold-light);--btn-fg:var(--c-emerald);--heading:var(--c-gold-light);--accent:var(--c-on-emerald);--chip-bg:rgba(232,201,143,.15);--chip-fg:var(--c-gold-light);color-scheme:dark;" -}}
+:root{
+{{ partial "css/token-vars.html" "light" | safeCSS }}
+{{- range hugo.Data.tokens.spacing.tokens }}--{{ .name }}:{{ .value }};{{ end }}
+{{- range hugo.Data.tokens.radius.tokens }}--{{ .name }}:{{ .value }};{{ end }}
+--font-serif:"Cormorant Garamond",Georgia,serif;
+--font-sans:Manrope,system-ui,sans-serif;
+--card-bg:var(--c-surface-raised);
+--card-border:var(--c-line);
+--btn-bg:var(--c-emerald);
+--btn-fg:var(--c-on-emerald);
+--heading:var(--c-ink-brown);
+--accent:var(--c-gold);
+--chip-bg:rgba(140,95,36,.12);
+--chip-fg:var(--c-gold);
+color-scheme:light;
+}
+:root[data-theme="dark"]{ {{- $dark | safeCSS }}{{ $darkComponents | safeCSS -}} }
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){ {{- $dark | safeCSS }}{{ $darkComponents | safeCSS -}} }}

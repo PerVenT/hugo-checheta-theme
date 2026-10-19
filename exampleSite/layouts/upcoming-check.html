@@ -1,0 +1,4 @@
+{{ define "main" }}
+<section data-upcoming>{{ range partial "product/upcoming.html" (dict "limit" 10) }}{{ partial "product/card.html" . }}{{ end }}</section>
+<section data-bare>{{ partial "product/card.html" (site.GetPage "/products/bare") }}</section>
+{{ end }}

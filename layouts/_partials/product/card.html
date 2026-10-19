@@ -1,0 +1,26 @@
+{{- $label := partial "product/label.html" . -}}
+<article class="card" data-product="{{ .Params.id }}">
+  {{- if .Params.pinned }}{{ partial "pin.html" }}{{ end }}
+  {{- $img := partial "product/images.html" . }}
+  {{- with $img.light }}
+  <div class="card__media">
+    {{ partial "img.html" (dict "src" . "alt" "" "widths" (slice 480 960) "sizes" "(min-width: 960px) 380px, 100vw" "class" (cond (ne $img.dark nil) "only-light" "")) }}
+    {{- with $img.dark }}
+    {{ partial "img.html" (dict "src" . "alt" "" "widths" (slice 480 960) "sizes" "(min-width: 960px) 380px, 100vw" "class" "only-dark") }}
+    {{- end }}
+  </div>
+  {{- end }}
+  <div class="card__body">
+    {{- with $label }}
+    <p class="card__label">{{ . }}</p>
+    {{- end }}
+    <h3 class="card__title">{{ .Title }}</h3>
+    {{- with .Params.bonus }}
+    <p class="card__bonus">{{ partial "icon-gift.html" . }} {{ . }}</p>
+    {{- end }}
+    {{- with .Params.chips }}
+    <ul class="chips">{{ range first 3 . }}<li class="chip">{{ . }}</li>{{ end }}</ul>
+    {{- end }}
+    <a class="btn btn--block" href="{{ .RelPermalink }}">{{ i18n "card_more" }}</a>
+  </div>
+</article>

@@ -1,0 +1,5 @@
+#!/bin/sh
+# Blocks the commit if exampleSite does not build (clear Hugo error first) or a theme test fails.
+# Enable once per clone: git config core.hooksPath .githooks
+hugo --source exampleSite --renderToMemory > /dev/null || exit 1
+exec node --test "tests/**/*.test.mjs"

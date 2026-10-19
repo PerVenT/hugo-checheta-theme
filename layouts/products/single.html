@@ -1,0 +1,36 @@
+{{ define "main" }}
+{{- $label := partial "product/label.html" . -}}
+<main class="product">
+  <header class="product__hero container">
+    {{- $img := partial "product/images.html" . }}
+    {{- with $img.light }}
+    <div class="product__media">
+      {{ partial "img.html" (dict "src" . "alt" "" "eager" true "sizes" "(min-width: 960px) 560px, 100vw" "class" (cond (ne $img.dark nil) "only-light" "")) }}
+      {{- with $img.dark }}{{ partial "img.html" (dict "src" . "alt" "" "sizes" "(min-width: 960px) 560px, 100vw" "class" "only-dark") }}{{ end }}
+    </div>
+    {{- end }}
+    <div class="product__intro">
+      {{- with $label }}<p class="card__label">{{ . }}</p>{{ end }}
+      <h1>{{ .Title }}</h1>
+      {{- with .Params.bonus }}<p class="card__bonus">{{ partial "icon-gift.html" . }} {{ . }}</p>{{ end }}
+      {{- with .Params.chips }}<ul class="chips">{{ range first 3 . }}<li class="chip">{{ . }}</li>{{ end }}</ul>{{ end }}
+      {{- with .Params.lead }}<p class="product__lead">{{ . }}</p>{{ end }}
+      {{- if and (eq .Params.status "open") .Params.start }}
+      <p class="countdown" hidden data-countdown="{{ (time .Params.start).UTC.Format "2006-01-02T15:04:05Z" }}" data-units="{{ i18n "countdown_units" }}">{{ i18n "countdown_prefix" }} <strong data-countdown-value></strong></p>
+      {{- end }}
+      <div class="product__actions">
+        {{ partial "product/buy.html" . }}
+        {{- if and (eq .Params.product_type "mentorship") (eq .Params.status "open") }}{{ partial "product/ask.html" . }}{{ end }}
+      </div>
+    </div>
+  </header>
+  {{- with .Content }}<div class="container section"><div class="prose">{{ . }}</div></div>{{ end }}
+  <div class="container">{{ partial "product/sections.html" . }}</div>
+  {{- if and (eq .Params.status "open") (ne .Params.product_type "webinar") }}
+  <div class="container product__actions product__actions--bottom" id="talk">
+    {{ partial "product/buy.html" . }}
+    {{- if eq .Params.product_type "mentorship" }}{{ partial "product/talk.html" . }}{{ end }}
+  </div>
+  {{- end }}
+</main>
+{{ end }}

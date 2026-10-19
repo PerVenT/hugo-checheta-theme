@@ -1,0 +1,21 @@
+{{- /* Responsive image from assets/: WebP srcset + resized fallback.
+     Params: src (assets path), alt, widths (default 480/960/1440), sizes, eager (bool), class. */ -}}
+{{- $r := resources.Get .src -}}
+{{- if $r -}}
+  {{- $widths := .widths | default (slice 480 960 1440) -}}
+  {{- $srcset := slice -}}
+  {{- $largest := $r -}}
+  {{- range $widths -}}
+    {{- if le . $r.Width -}}
+      {{- $i := $r.Resize (printf "%dx webp q80" .) -}}
+      {{- $srcset = $srcset | append (printf "%s %dw" $i.RelPermalink $i.Width) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $fbWidth := cond (lt $r.Width 960) $r.Width 960 -}}
+  {{- $fb := $r.Resize (printf "%dx jpg q80" $fbWidth) -}}
+  <img src="{{ $fb.RelPermalink }}"
+    {{- with $srcset }} srcset="{{ delimit . ", " }}" sizes="{{ $.sizes | default "100vw" }}"{{ end }}
+    width="{{ $fb.Width }}" height="{{ $fb.Height }}" alt="{{ .alt }}"
+    {{- with .class }} class="{{ . }}"{{ end }}
+    {{- if .eager }} fetchpriority="high"{{ else }} loading="lazy"{{ end }} decoding="async">
+{{- end -}}

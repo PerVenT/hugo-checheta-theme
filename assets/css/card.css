@@ -1,0 +1,30 @@
+.card{position:relative;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:var(--card-bg);border:1px solid var(--card-border)}
+.card__media{position:relative;aspect-ratio:8/3;overflow:hidden}
+.card__media img{width:100%;height:100%;object-fit:cover;object-position:0 76%}
+.card__media::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--card-bg) 0%,transparent 40%)}
+.card__body{display:flex;flex-direction:column;flex:1;padding:2px var(--space-4) var(--space-4)}
+.card:not(:has(.card__media)) .card__body{padding-top:var(--space-4)}
+.card__label{margin:0;font:500 11px/16px var(--font-sans);letter-spacing:.25em;text-transform:uppercase;color:var(--chip-fg)}
+.card__title{margin:2px 0 0;font:500 22px/1.15 var(--font-serif);color:var(--c-ink-brown)}
+:root[data-theme="dark"] .card__title{color:var(--c-on-emerald)}
+.card__bonus{display:flex;align-items:center;gap:6px;margin:4px 0 0;font-size:13px;color:var(--c-ink-muted)}
+.icon--gift{flex:none;color:var(--accent)}
+:root[data-theme="dark"] .icon--gift{color:var(--c-gold-light)}
+:root[data-theme="dark"] .card__bonus{color:rgba(244,233,215,.85)}
+.chips{display:flex;flex-wrap:nowrap;gap:6px;margin:10px 0 0;padding:0;list-style:none;white-space:nowrap;overflow:hidden}
+.chip{font-size:11px;padding:4px 9px;border-radius:var(--radius-pill);background:var(--chip-bg);color:var(--chip-fg)}
+.card .btn{margin-top:auto}
+.card__bonus + .btn,.card__title + .btn,.chips + .btn{margin-top:12px}
+.btn{display:inline-block;text-align:center;padding:12px 20px;border-radius:var(--radius-pill);background:var(--btn-bg);color:var(--btn-fg);font:600 14px/1.2 var(--font-sans);text-decoration:none;border:1px solid transparent;cursor:pointer}
+.btn--block{display:block;width:100%}
+.btn--ghost{background:transparent;color:var(--accent);border-color:currentColor}
+.only-dark{display:none}
+:root[data-theme="dark"] .only-dark{display:block}
+:root[data-theme="dark"] .only-light{display:none}
+/* Pinned mark: favicon debossed — inner shadow on top, light edge below. */
+.pin{position:absolute;top:10px;right:10px;z-index:1;width:30px;height:30px;border-radius:22%;overflow:hidden;line-height:0;box-shadow:0 1px 0 rgba(255,255,255,.45)}
+.pin img{width:100%;height:100%}
+.pin::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 2px 4px rgba(0,0,0,.75),inset 0 -1px 1px rgba(255,255,255,.25);pointer-events:none}
+.links__btn{position:relative}
+.links__btn:has(.pin){padding-inline:52px}
+.links__btn .pin{top:50%;left:12px;right:auto;translate:0 -50%}

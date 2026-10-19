@@ -1,0 +1,45 @@
+{{- /* Recursive check of one value against one rule from data/limits.yml (see the comment there). */ -}}
+{{- $v := .v -}}
+{{- $rule := .rule -}}
+{{- $path := .path -}}
+{{- $file := .file -}}
+{{- if not (reflect.IsMap $rule) -}}
+  {{- $n := strings.RuneCount (string $v) -}}
+  {{- if gt $n $rule -}}
+    {{- errorf "%s" (i18n "limit_chars" (dict "file" $file "field" $path "n" $n "max" $rule)) -}}
+  {{- end -}}
+{{- else -}}
+  {{- $list := cond (reflect.IsSlice $v) $v (slice) -}}
+  {{- with $rule.max -}}
+    {{- if gt (len $list) . -}}
+      {{- errorf "%s" (i18n "limit_count" (dict "file" $file "field" $path "n" (len $list) "max" .)) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $rule.each -}}
+    {{- $each := . -}}
+    {{- range $i, $x := $list -}}
+      {{- partial "limits/check.html" (dict "v" $x "rule" $each "path" (printf "%s[%d]" $path $i) "file" $file) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $rule.total -}}
+    {{- $sum := 0 -}}
+    {{- range $list }}{{ $sum = add $sum (strings.RuneCount (string .)) }}{{ end -}}
+    {{- if gt $sum . -}}
+      {{- errorf "%s" (i18n "limit_total" (dict "file" $file "field" $path "n" $sum "max" .)) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $rule.fields -}}
+    {{- $fields := . -}}
+    {{- $items := cond (reflect.IsSlice $v) $v (slice $v) -}}
+    {{- range $i, $item := $items -}}
+      {{- if reflect.IsMap $item -}}
+        {{- $base := cond (reflect.IsSlice $v) (printf "%s[%d]" $path $i) $path -}}
+        {{- range $k, $r := $fields -}}
+          {{- with index $item $k -}}
+            {{- partial "limits/check.html" (dict "v" . "rule" $r "path" (printf "%s.%s" $base $k) "file" $file) -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

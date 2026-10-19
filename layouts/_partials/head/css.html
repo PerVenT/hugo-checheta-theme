@@ -1,0 +1,7 @@
+{{- $tokens := resources.Get "css/tokens.css" | resources.ExecuteAsTemplate "css/tokens.gen.css" . -}}
+{{- $files := slice $tokens -}}
+{{- range slice "base" "fonts" "layout" "card" "product" "forms" "pages" -}}
+  {{- with resources.Get (printf "css/%s.css" .) }}{{ $files = $files | append . }}{{ end -}}
+{{- end -}}
+{{- $css := $files | resources.Concat "css/site.css" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">

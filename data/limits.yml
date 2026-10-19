@@ -1,0 +1,36 @@
+# Максимальна довжина полів front matter у символах (з пробілами).
+# Перевищення зупиняє збірку з повідомленням: файл, поле, довжина, ліміт.
+# Сайт може перевизначити таблицю своїм data/limits.yml.
+# Правило: число — ліміт рядка; each — ліміт кожного елемента списку;
+# total — сума по списку; max — кількість елементів; fields — поля елементів.
+title: 55
+lead: 160
+bonus: 40
+chips: {max: 3, each: 14, total: 30}
+program:
+  fields:
+    title: 45
+    items: {each: 80}
+audience: {each: 90}
+results: {each: 90}
+testimonials:
+  fields:
+    name: 30
+faq:
+  fields:
+    q: 80
+hero:
+  fields:
+    label: 38
+    cta:
+      fields:
+        label: 32
+role: 36
+cta:
+  fields:
+    label: 32
+links:
+  fields:
+    label: 32
+# Заголовок головної разом з акцентом (hero.title + " " + hero.accent).
+hero_title: 60

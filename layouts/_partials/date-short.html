@@ -1,0 +1,3 @@
+{{- /* Day number + genitive month from i18n. Accepts time.Time or a date string. */ -}}
+{{- $t := time . -}}
+{{- return printf "%d %s" $t.Day (i18n (printf "month_genitive_%d" (int $t.Month))) -}}

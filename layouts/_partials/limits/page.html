@@ -1,0 +1,18 @@
+{{- /* Fails the build when a front matter field exceeds data/limits.yml. Called once per page from baseof. */ -}}
+{{- with .File -}}
+  {{- $file := .Path -}}
+  {{- $params := $.Params -}}
+  {{- range $key, $rule := hugo.Data.limits -}}
+    {{- if ne $key "hero_title" -}}
+      {{- with index $params $key -}}
+        {{- partial "limits/check.html" (dict "v" . "rule" $rule "path" $key "file" $file) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $params.hero -}}
+    {{- with hugo.Data.limits.hero_title -}}
+      {{- $title := trim (printf "%s %s" ($params.hero.title | default "") ($params.hero.accent | default "")) " " -}}
+      {{- partial "limits/check.html" (dict "v" $title "rule" . "path" "hero.title + hero.accent" "file" $file) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

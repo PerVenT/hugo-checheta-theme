@@ -1,0 +1,11 @@
+{{- /* Light header on every page except home: back link plus menus.main from hugo.yml. */ -}}
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__home" href="{{ "/" | relURL }}">{{ i18n "go_home" }}</a>
+    {{- with site.Menus.main }}
+    <nav class="site-nav" aria-label="{{ i18n "nav_main" }}">
+      {{- range . }}<a href="{{ .URL }}"{{ if hasPrefix $.RelPermalink .URL }} aria-current="page"{{ end }}>{{ .Name }}</a>{{ end }}
+    </nav>
+    {{- end }}
+  </div>
+</header>

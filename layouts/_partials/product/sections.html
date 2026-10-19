@@ -1,0 +1,41 @@
+{{- $p := .Params -}}
+{{- with $p.program }}
+<section class="section section--program">
+  <h2>{{ i18n "section_program" }}</h2>
+  <div class="weeks">{{ range $i, $s := . }}
+    <details class="week"{{ if eq $i 0 }} open{{ end }}>
+      <summary class="week__head"><span class="step__num" aria-hidden="true"><span><b>{{ add $i 1 }}</b></span></span><span class="week__title">{{ $s.title }}</span></summary>
+      <div class="week__body">
+        {{- with $s.text }}<p>{{ . | markdownify }}</p>{{ end }}
+        {{- with $s.items }}<ul class="sparks">{{ range . }}<li>{{ . | markdownify }}</li>{{ end }}</ul>{{ end }}
+      </div>
+    </details>{{ end }}
+  </div>
+</section>
+{{- end }}
+{{- with $p.audience }}
+<section class="section section--audience">
+  <h2>{{ i18n "section_audience" }}</h2>
+  <ul class="sparks">{{ range . }}<li>{{ . | markdownify }}</li>{{ end }}</ul>
+</section>
+{{- end }}
+{{- with $p.results }}
+<section class="section section--results">
+  <h2>{{ i18n "section_results" }}</h2>
+  <ul class="sparks">{{ range . }}<li>{{ . | markdownify }}</li>{{ end }}</ul>
+</section>
+{{- end }}
+{{- with where ($p.testimonials | default slice) "image" "!=" nil }}
+<section class="section section--testimonials">
+  <h2>{{ i18n "section_testimonials" }}</h2>
+  <ul class="shots" tabindex="0" aria-label="{{ i18n "section_testimonials" }}">{{ range . }}
+    <li class="shot">{{ partial "img.html" (dict "src" .image "alt" (or .name (i18n "testimonial_alt")) "widths" (slice 640 960) "sizes" "320px") }}{{ with .name }}<span class="shot__name">{{ . }}</span>{{ end }}</li>{{ end }}
+  </ul>
+</section>
+{{- end }}
+{{- with $p.faq }}
+<section class="section section--faq" id="faq">
+  <h2>{{ i18n "section_faq" }}</h2>
+  {{ range . }}<details class="faq"><summary>{{ .q }}</summary><div>{{ .a | markdownify }}</div></details>{{ end }}
+</section>
+{{- end }}

@@ -1,0 +1,27 @@
+{{- /* Products that are not closed (status close or closed): the pinned one first (shown even after its start), then dated ones that have
+     not started, by start, then undated by weight. Only one product may be pinned. Params: limit (0 = all). */ -}}
+{{- $pinned := slice -}}
+{{- $dated := slice -}}
+{{- $undated := slice -}}
+{{- range where site.RegularPages "Section" "products" -}}
+  {{- $p := . -}}
+  {{- if and $p.Params.id (not (in (slice "close" "closed") $p.Params.status)) -}}
+    {{- if $p.Params.pinned -}}
+      {{- $pinned = $pinned | append $p -}}
+    {{- else -}}
+      {{- with $p.Params.start -}}
+        {{- if ge (time .).Unix now.Unix }}{{ $dated = $dated | append $p }}{{ end -}}
+      {{- else -}}
+        {{- $undated = $undated | append $p -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if gt (len $pinned) 1 -}}
+  {{- $files := slice -}}
+  {{- range $pinned }}{{ $files = $files | append .File.Path }}{{ end -}}
+  {{- errorf "%s" (i18n "pin_many" (dict "n" (len $pinned) "files" (delimit (sort $files) ", "))) -}}
+{{- end -}}
+{{- $all := $pinned | append (sort $dated "Params.start") | append (sort $undated "Weight") -}}
+{{- with .limit }}{{ $all = first . $all }}{{ end -}}
+{{- return $all -}}

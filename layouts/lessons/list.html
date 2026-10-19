@@ -1,0 +1,8 @@
+{{ define "main" }}
+<main class="container page">
+  <h1>{{ .Title }}</h1>
+  {{- with .Params.lead }}<p class="page__lead">{{ . }}</p>{{ end }}
+  {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  <div class="lessons">{{ range .Pages.ByWeight }}{{ partial "lesson.html" (dict "page" . "single" false) }}{{ end }}</div>
+</main>
+{{ end }}

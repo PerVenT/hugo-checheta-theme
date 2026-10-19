@@ -1,0 +1,13 @@
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;background:var(--c-surface);color:var(--c-ink);font:400 16px/1.5 var(--font-sans)}
+h1,h2,h3{font-family:var(--font-serif);color:var(--heading);font-weight:500;line-height:1.1;margin:0 0 .5em}
+a{color:inherit}
+img{max-width:100%;height:auto;display:block}
+:focus-visible{outline:2px solid var(--c-focus-ring);outline-offset:2px}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius-pill);border:1px solid var(--c-line);background:var(--c-surface-raised);color:var(--accent);font-size:18px;cursor:pointer}
+.theme-toggle--float{position:fixed;z-index:10;right:calc(16px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));width:44px;height:44px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.theme-toggle__icon--light{display:none}
+:root[data-theme="dark"] .theme-toggle__icon--dark{display:none}
+:root[data-theme="dark"] .theme-toggle__icon--light{display:inline}

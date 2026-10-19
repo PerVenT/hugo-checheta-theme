@@ -1,0 +1,16 @@
+{{ define "main" }}
+{{- $name := site.Params.brand | default site.Title -}}
+<main class="container page about">
+  {{- with .Params.image }}
+  <div class="about__media">
+    {{ partial "img.html" (dict "src" . "alt" $name "eager" true "sizes" "(min-width: 960px) 460px, 100vw" "class" (cond (isset $.Params "image_dark") "only-light" "")) }}
+    {{- with $.Params.image_dark }}{{ partial "img.html" (dict "src" . "alt" $name "sizes" "(min-width: 960px) 460px, 100vw" "class" "only-dark") }}{{ end }}
+  </div>
+  {{- end }}
+  <div class="about__text">
+    <h1>{{ .Title }}</h1>
+    {{- with .Params.lead }}<p class="page__lead">{{ . }}</p>{{ end }}
+    <div class="prose">{{ .Content }}</div>
+  </div>
+</main>
+{{ end }}

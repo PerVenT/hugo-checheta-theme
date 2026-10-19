@@ -1,0 +1,27 @@
+{{- /* Lead form. Params: form (webinar|lesson|waitlist), product (page, optional). Posts JSON to params.forms.endpoint. */ -}}
+{{- $type := .form -}}
+{{- $privacy := site.Params.privacy_url | default "/privacy/" -}}
+{{- $pid := .id -}}
+{{- with .product }}{{ $pid = or $pid .Params.id }}{{ end -}}
+<form class="form" data-form="{{ $type }}"{{ with $pid }} data-product="{{ . }}"{{ end }} data-endpoint="{{ site.Params.forms.endpoint }}" novalidate>
+  <h3 class="form__title">{{ i18n (printf "form_%s_title" $type) }}</h3>
+  <div class="form__fields" data-form-fields>
+    <label class="field"><span>{{ i18n "field_name" }}</span><input name="name" autocomplete="given-name" required></label>
+    {{- if eq $type "webinar" }}
+    <label class="field"><span>{{ i18n "field_email" }}</span><input name="email" type="email" autocomplete="email" required></label>
+    <label class="field"><span>{{ i18n "field_telegram" }}</span><input name="telegram" autocomplete="off" placeholder="@username"></label>
+    {{- else }}
+    <label class="field"><span>{{ i18n "field_contact" }}</span><input name="contact" autocomplete="email" required></label>
+    {{- end }}
+    <label class="field field--hp" aria-hidden="true"><span>Website</span><input name="website" tabindex="-1" autocomplete="off"></label>
+    <label class="consent"><input type="checkbox" name="consent" value="yes" required> <span>{{ i18n "field_consent" (dict "url" ($privacy | relURL)) | safeHTML }}</span></label>
+    <button class="btn btn--block" type="submit">{{ i18n (printf "form_%s_submit" $type) }}</button>
+  </div>
+  <p class="form__success" data-form-success hidden role="status">{{ i18n (printf "form_%s_success" $type) }}</p>
+  <div class="form__fallback" data-form-fallback hidden role="alert">
+    <p>{{ i18n "form_fallback" }}</p>
+    {{- with site.Params.telegram.username }}
+    <a class="btn btn--ghost" href="https://t.me/{{ . }}" data-umami-event="talk-click" data-umami-event-product="form-fallback">{{ i18n "form_fallback_cta" }}</a>
+    {{- end }}
+  </div>
+</form>

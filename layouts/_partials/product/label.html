@@ -1,0 +1,12 @@
+{{- /* Status line above the product title; empty string when nothing to say. */ -}}
+{{- $label := "" -}}
+{{- if eq .Params.status "waitlist" -}}
+  {{- $label = i18n "label_waitlist" -}}
+{{- else if eq .Params.status "open" -}}
+  {{- with .Params.start -}}
+    {{- if ge (time .).Unix now.Unix -}}
+      {{- $label = i18n "label_start" (dict "date" (partial "date-short.html" .)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $label -}}
