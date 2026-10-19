@@ -18,7 +18,7 @@ label_start: Старт {{ .date }}
 label_waitlist: Скоро новий набір
 card_more: Дізнатися більше
 pay: Оплатити
-currency_uah: грн
+currency_uah: ₴
 talk: Хочу поговорити
 ask: Є питання?
 pinned: Закріплено

@@ -39,5 +39,5 @@ test('on wide screens the form spans the actions row and lays fields out in a li
   const css = readOut(html.match(/<link rel="stylesheet" href="([^"]+)"/)[1].slice(1));
   assert.match(css, /\.product__actions>\.form\{[^}]*grid-column:1\/-1/);
   assert.match(css, /\.product__hero:not\(:has\(\.product__media\)\)\{[^}]*grid-template-columns:1fr/);
-  assert.match(css, /@media\(min-width:640px\)\{\.form__fields\{display:flex;flex-wrap:wrap/);
+  assert.match(css, /@media\(min-width:640px\)\{\.form__fields\{grid-template-columns:1fr 1fr/);
 });

@@ -39,8 +39,14 @@
 :root[data-theme="dark"] .faq summary{color:var(--c-on-emerald)}
 .faq div{padding-top:8px;color:var(--c-ink-muted)}
 @media (min-width:960px){
-  .product__hero{grid-template-columns:1.1fr 1fr;align-items:center}
-  .product__hero:not(:has(.product__media)){grid-template-columns:1fr}
+  /* Body text fills the left column under the image; the intro keeps the right column, so neither side leaves a gap. */
+  .product__hero{grid-template-columns:1.1fr 1fr;grid-template-rows:auto 1fr;grid-template-areas:"media intro" "content intro";align-items:start}
+  .product__media{grid-area:media}
+  .product__intro{grid-area:intro}
+  .product__content{grid-area:content}
+  /* Without a form the intro is about as tall as the image, so the body text goes full width below both. */
+  .product__hero:has(.product__media):not(:has(.product__actions .form)){grid-template-rows:auto;grid-template-areas:"media intro" "content content"}
+  .product__hero:not(:has(.product__media)){grid-template-columns:1fr;grid-template-rows:auto;grid-template-areas:"intro" "content"}
   .product__hero:not(:has(.product__media)) .product__intro{max-width:760px}
   .product__actions{grid-template-columns:1fr 1fr}
   }

@@ -9,10 +9,10 @@ bonus: 40
 chips: {max: 3, each: 14, total: 30}
 program:
   fields:
-    title: 45
-    items: {each: 80}
-audience: {each: 90}
-results: {each: 90}
+    title: 80
+    items: {each: 160}
+audience: {each: 160}
+results: {each: 160}
 testimonials:
   fields:
     name: 30

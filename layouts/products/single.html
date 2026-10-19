@@ -1,7 +1,7 @@
 {{ define "main" }}
 {{- $label := partial "product/label.html" . -}}
 <main class="product">
-  <header class="product__hero container">
+  <div class="product__hero container">
     {{- $img := partial "product/images.html" . }}
     {{- with $img.light }}
     <div class="product__media">
@@ -23,8 +23,8 @@
         {{- if and (eq .Params.product_type "mentorship") (eq .Params.status "open") }}{{ partial "product/ask.html" . }}{{ end }}
       </div>
     </div>
-  </header>
-  {{- with .Content }}<div class="container section"><div class="prose">{{ . }}</div></div>{{ end }}
+    {{- with .Content }}<div class="product__content prose">{{ . }}</div>{{ end }}
+  </div>
   <div class="container">{{ partial "product/sections.html" . }}</div>
   {{- if and (eq .Params.status "open") (ne .Params.product_type "webinar") }}
   <div class="container product__actions product__actions--bottom" id="talk">

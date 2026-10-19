@@ -34,7 +34,7 @@ test('one character over the limit stops the build and names file and field', ()
 });
 
 test('list items are checked one by one with their index', () => {
-  assert.match(buildWith(`program:\n  - title: Тиждень 1\n    items: [ок, ${W(81)}]`), /«program\[0\]\.items\[1\]» — 81 символів, максимум 80/);
+  assert.match(buildWith(`program:\n  - title: Тиждень 1\n    items: [ок, ${W(161)}]`), /«program\[0\]\.items\[1\]» — 161 символів, максимум 160/);
   assert.match(buildWith(`faq:\n  - q: ${W(81)}\n    a: так`), /«faq\[0\]\.q» — 81/);
 });
 

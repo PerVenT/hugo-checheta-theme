@@ -15,6 +15,17 @@
 .chip{font-size:11px;padding:4px 9px;border-radius:var(--radius-pill);background:var(--chip-bg);color:var(--chip-fg)}
 .card .btn{margin-top:auto}
 .card__bonus + .btn,.card__title + .btn,.chips + .btn{margin-top:12px}
+/* Cards in one grid row share row lines: label, title, bonus, chips and button line up whatever the title length. */
+@supports (grid-template-rows:subgrid){
+  .card{display:grid;grid-row:span 6;grid-template-rows:subgrid;row-gap:0;align-self:stretch}
+  .card__media{grid-row:1}
+  .card__body{grid-row:2/span 5;display:grid;grid-template-rows:subgrid;row-gap:0}
+  .card__label{grid-row:1}
+  .card__title{grid-row:2}
+  .card__bonus{grid-row:3}
+  .chips{grid-row:4}
+  .card .btn{grid-row:5;align-self:end;margin-top:12px}
+}
 .btn{display:inline-block;text-align:center;padding:12px 20px;border-radius:var(--radius-pill);background:var(--btn-bg);color:var(--btn-fg);font:600 14px/1.2 var(--font-sans);text-decoration:none;border:1px solid transparent;cursor:pointer}
 .btn--block{display:block;width:100%}
 .btn--ghost{background:transparent;color:var(--accent);border-color:currentColor}

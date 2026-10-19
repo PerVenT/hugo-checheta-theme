@@ -4,7 +4,7 @@
 
 Hugo-тема (модуль) для сайту-воронки: програми, курси, вебінари й події з оплатою, листом очікування, безкоштовними уроками й сторінкою `/links` для соцмереж. Світла й темна теми, без cookies, тексти українською.
 
-**Демо: <https://pervent.github.io/hugo-checheta-theme/>** — вигаданий клуб «Лісові звірі Карпат» з `exampleSite/`: по одній сторінці кожного типу з усіма заповненими полями. Локально: `hugo server --source exampleSite`. Демо публікується на GitHub Pages після зелених тестів на `main` (`.github/workflows/demo.yml`).
+**Демо: <https://pervent.dev/hugo-checheta-theme/>** — вигаданий клуб «Лісові звірі Карпат» з `exampleSite/`: по одній сторінці кожного типу з усіма заповненими полями. Локально: `hugo server --source exampleSite`. Демо публікується на GitHub Pages після зелених тестів на `main` (`.github/workflows/demo.yml`).
 
 Тема працює й у підпапці (як демо на GitHub Pages): посилання в `menus`, `links`, `hero.cta` пиши від кореня сайту (`/about/`), тема сама додасть шлях з `baseURL`; у markdown-тексті сторінок — відносні посилання (`../contacts/`).
 
@@ -96,8 +96,8 @@ git config core.hooksPath .githooks
 | `lead` (короткий опис під заголовком) | 160 |
 | `bonus` | 40 |
 | `chips` | до 3 шт., кожен ≤ 14, разом ≤ 30 |
-| `program[].title` / `program[].items[]` | 45 / 80 |
-| `audience[]`, `results[]` | 90 |
+| `program[].title` / `program[].items[]` | 80 / 160 |
+| `audience[]`, `results[]` | 160 |
 | `testimonials[].name` | 30 |
 | `faq[].q` | 80 |
 | `hero.label` / `hero.title` + `hero.accent` / `hero.cta.label` | 36 / 60 / 32 |

@@ -33,7 +33,7 @@ test('lead from front matter sits under the title, body text goes below the hero
   const intro = html.match(/<div class="product__intro">[^]*?<div class="product__actions">/)?.[0] ?? '';
   assert.match(intro, /<h1>[^]*<p class="product__lead">Шість тижнів із провідником[^<]*<\/p>/);
   assert.doesNotMatch(intro, /Курс поєднує/);
-  assert.match(html, /<\/header>[^]*<div class="prose">\s*<p>Курс поєднує[^]*<\/div>/);
+  assert.match(html, /<div class="product__actions">[^]*<div class="product__content prose">\s*<p>Курс поєднує[^]*<\/div>/);
   assert.match(html, /<meta name="description" content="Шість тижнів із провідником[^"]*">/);
 });
 
