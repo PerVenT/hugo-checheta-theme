@@ -33,7 +33,9 @@ params:
     id: ""
   shortlinks:
     ig: /links/?utm_source=instagram&utm_medium=social&utm_campaign=bio
-    yt: https://example.org/products/?utm_source=youtube&utm_medium=social&utm_campaign=description
+    yt: /products/?utm_source=youtube&utm_medium=social&utm_campaign=description
+  outlinks:
+    instagram: https://instagram.com/zviri_example
 menus:
   main:
     - name: Програми

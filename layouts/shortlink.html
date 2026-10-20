@@ -1,15 +1,42 @@
-{{- /* Redirect page for a short link: no baseof, no analytics, the target page counts the visit with its UTM tags. */ -}}
+{{- /* Redirect page for params.shortlinks and params.outlinks; no baseof.
+     shortlinks: the target page on this site counts the visit with its UTM tags, so nothing is tracked here.
+     outlinks (.Params.track): the target is another site, so a real browser sends the Umami event "outlink-click" first;
+     bots, link previews and automated browsers are sent on without it. */ -}}
 {{- $to := .Params.to -}}
 {{- if not (urls.Parse $to).IsAbs }}{{ $to = strings.TrimPrefix "/" $to | absURL }}{{ end -}}
+{{- $umami := site.Params.umami -}}
+{{- $track := and .Params.track $umami $umami.src $umami.id -}}
 <!doctype html>
 <html lang="{{ site.Language.Locale }}">
 <head>
 <meta charset="utf-8">
 <title>{{ site.Title }}</title>
-<meta name="robots" content="noindex">
+<meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="{{ $to }}">
+{{- if $track }}
+<noscript><meta http-equiv="refresh" content="0; url={{ $to }}"></noscript>
+<script>
+(function(){
+  var to = {{ $to }}, done = false;
+  function go(){ if (!done) { done = true; location.replace(to); } }
+  var bot = /bot|crawl|spider|slurp|preview|fetch|headless|lighthouse|facebookexternalhit|whatsapp|telegram|discord|slack|vkshare|gpt|claude|anthropic|perplexity|bytespider|ccbot|cohere|meta-external/i;
+  if (navigator.webdriver || bot.test(navigator.userAgent)) return go();
+  setTimeout(go, 1000);
+  var s = document.createElement('script');
+  s.src = {{ $umami.src }};
+  s.setAttribute('data-website-id', {{ $umami.id }});
+  s.setAttribute('data-auto-track', 'false');
+  s.onload = function(){
+    try { Promise.resolve(umami.track('outlink-click', { link: {{ .Params.slug }} })).then(go, go); } catch (e) { go(); }
+  };
+  s.onerror = go;
+  document.head.appendChild(s);
+})();
+</script>
+{{- else }}
 <meta http-equiv="refresh" content="0; url={{ $to }}">
 <script>location.replace({{ $to }})</script>
+{{- end }}
 </head>
 <body><a href="{{ $to }}">{{ site.Title }}</a></body>
 </html>
