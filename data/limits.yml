@@ -21,7 +21,7 @@ faq:
     q: 80
 hero:
   fields:
-    label: 38
+    label: 42
     cta:
       fields:
         label: 32
