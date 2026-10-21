@@ -36,20 +36,22 @@ home_programs: Програми й події
 links_telegram: Telegram-канал
 form_webinar_title: Записатися на вебінар
 form_webinar_submit: Записатися
-form_webinar_success: Готово, місце за тобою! Деталі надішлемо на пошту.
+form_webinar_success: Готово, місце за тобою! Деталі надішлю на пошту.
 form_lesson_title: Отримати наступний крок
 form_lesson_submit: Отримати
-form_lesson_success: Дякуємо! Ми скоро зв'яжемося з тобою.
+form_lesson_success: Дякую! Скоро зв'яжуся з тобою.
 form_waitlist_title: Повідомити про новий набір
 form_waitlist_submit: Повідомте мене
-form_waitlist_success: Дякуємо! Про новий набір ти дізнаєшся серед перших.
+form_waitlist_success: Дякую! Про новий набір повідомлю тобі серед перших.
 field_name: Ім'я
 field_email: Email
 field_telegram: Telegram (необов'язково)
-field_contact: Email або Telegram
 field_consent: Погоджуюся з <a href="{{ .url }}">обробкою персональних даних</a>
-form_fallback: Не вдалося надіслати форму. Напиши нам у Telegram — відповімо особисто.
+form_fallback: Не вдалося надіслати форму. Напиши мені в Telegram — відповім особисто.
 form_fallback_cta: Написати в Telegram
+form_calendar_google: Google Календар
+form_calendar_ics: Додати в календар (.ics)
+form_telegram_cta: Отримати нагадування в Telegram
 testimonial_alt: Скриншот відгуку
 limit_chars: "{{ .file }}: «{{ .field }}» — {{ .n }} символів, максимум {{ .max }}"
 limit_count: "{{ .file }}: «{{ .field }}» — {{ .n }} шт., максимум {{ .max }}"

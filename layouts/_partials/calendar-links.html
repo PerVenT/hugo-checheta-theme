@@ -1,0 +1,25 @@
+{{- /* "Add to calendar" links for a dated event page: Google Calendar URL and a published .ics file.
+     Times in UTC; end = start + params.duration minutes (default 180, game 240). Renders nothing without start. */ -}}
+{{- $p := . -}}
+{{- with $p.Params.start -}}
+  {{- $start := time.AsTime . -}}
+  {{- $dur := $p.Params.duration | default (cond (eq $p.Params.product_type "game") 240 180) -}}
+  {{- $end := $start.Add (time.ParseDuration (printf "%dm" (int $dur))) -}}
+  {{- $fmt := "20060102T150405Z" -}}
+  {{- $s := $start.UTC.Format $fmt -}}
+  {{- $e := $end.UTC.Format $fmt -}}
+  {{- $google := printf "https://calendar.google.com/calendar/render?%s" (querify "action" "TEMPLATE" "text" $p.Title "dates" (printf "%s/%s" $s $e) "details" $p.Permalink) -}}
+  {{- $summary := $p.Title | replaceRE `([\\;,])` `\$1` -}}
+  {{- $lines := slice
+      "BEGIN:VCALENDAR" "VERSION:2.0" (printf "PRODID:-//%s//site//UK" (urls.Parse site.BaseURL).Host) "CALSCALE:GREGORIAN" "METHOD:PUBLISH"
+      "BEGIN:VEVENT"
+      (printf "UID:%s@%s" ($p.Params.id | default $p.File.ContentBaseName) (urls.Parse site.BaseURL).Host)
+      (printf "DTSTAMP:%s" $s) (printf "DTSTART:%s" $s) (printf "DTEND:%s" $e)
+      (printf "SUMMARY:%s" $summary) (printf "URL:%s" $p.Permalink)
+      "END:VEVENT" "END:VCALENDAR" -}}
+  {{- $ics := resources.FromString (printf "calendar/%s.ics" ($p.Params.id | default $p.File.ContentBaseName)) (printf "%s\r\n" (delimit $lines "\r\n")) -}}
+  <p class="form__calendar">
+    <a class="btn btn--ghost" href="{{ $google }}" data-umami-event="calendar-google">{{ i18n "form_calendar_google" }}</a>
+    <a class="btn btn--ghost" href="{{ $ics.RelPermalink }}" download data-umami-event="calendar-ics">{{ i18n "form_calendar_ics" }}</a>
+  </p>
+{{- end -}}

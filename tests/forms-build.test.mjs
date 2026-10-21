@@ -23,7 +23,45 @@ test('waitlist form renders on waitlist product', async () => {
   await buildSite();
   const form = readOut('products/game/index.html').match(/<form[^]*?<\/form>/)[0];
   assert.match(form, /data-form="waitlist"/);
-  assert.match(form, /name="contact"/);
+  assert.match(form, /<input[^>]*name="email"[^>]*type="email"[^>]*required/);
+  assert.match(form, /<input[^>]*name="telegram"/);
+  assert.doesNotMatch(form, /name="contact"/);
+});
+
+test('lesson form asks for email and optional telegram', async () => {
+  await buildSite();
+  const form = readOut('lessons/urok-1/index.html').match(/<form[^]*?<\/form>/)[0];
+  assert.match(form, /data-form="lesson"/);
+  assert.match(form, /<input[^>]*name="email"[^>]*type="email"[^>]*required/);
+  assert.match(form, /<input[^>]*name="telegram"/);
+  assert.doesNotMatch(form, /name="contact"/);
+});
+
+test('webinar success shows calendar links in UTC with the page duration', async () => {
+  await buildSite();
+  const form = readOut('products/webinar/index.html').match(/<form[^]*?<\/form>/)[0];
+  const success = form.match(/<div class="form__success"[^]*?<\/div>/)[0];
+  // 2099-09-13 19:00 +03:00, duration 90 min.
+  assert.match(success, /href="https:\/\/calendar\.google\.com\/calendar\/render\?[^"]*dates=20990913T160000Z%2f20990913T173000Z/i);
+  const ics = success.match(/href="([^"]+\.ics)"/)[1];
+  const cal = readOut(ics.replace(/^\//, ''));
+  assert.match(cal, /^BEGIN:VCALENDAR\r\n/);
+  assert.match(cal, /DTSTART:20990913T160000Z\r\n/);
+  assert.match(cal, /DTEND:20990913T173000Z\r\n/);
+  assert.match(cal, /SUMMARY:Вебінар «Рись — тінь Карпат»\r\n/);
+  assert.match(success, /<a[^>]*data-form-telegram[^>]*hidden/);
+});
+
+test('form carries the bot username for the Telegram button', async () => {
+  await buildSite();
+  const form = readOut('products/webinar/index.html').match(/<form[^]*?<\/form>/)[0];
+  assert.match(form, /data-bot=""/);
+});
+
+test('products without a start get no calendar links', async () => {
+  await buildSite();
+  const form = readOut('products/game/index.html').match(/<form[^]*?<\/form>/)[0];
+  assert.doesNotMatch(form, /calendar\.google\.com|\.ics"/);
 });
 
 test('umami script only when configured; gtag absent when empty', async () => {

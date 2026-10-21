@@ -13,9 +13,26 @@ export function buildPayload(form, fields, { productId, page, utm, now }) {
   };
 }
 
-// Resolves "ok" only for a 2xx answer; anything else means the visitor should be offered Telegram.
+const FALLBACK = { result: 'fallback', data: null };
+const START_CODE = /^[A-Za-z0-9_-]{1,64}$/;
+
+// Telegram deep-link alphabet only; anything else from the server is ignored.
+export function telegramUrl(bot, code) {
+  if (!bot || typeof code !== 'string' || !START_CODE.test(code)) return null;
+  return `https://t.me/${bot}?start=${code}`;
+}
+
+async function readJson(res) {
+  try {
+    return (await res.json()) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// result is "ok" only for a 2xx answer; anything else means the visitor should be offered Telegram.
 export async function submitForm(endpoint, payload, { fetch: doFetch = globalThis.fetch, timeoutMs = 8000 } = {}) {
-  if (!endpoint) return 'fallback';
+  if (!endpoint) return FALLBACK;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -28,9 +45,9 @@ export async function submitForm(endpoint, payload, { fetch: doFetch = globalThi
       }),
       new Promise((_, reject) => controller.signal.addEventListener('abort', () => reject(new Error('timeout')))),
     ]);
-    return res?.ok ? 'ok' : 'fallback';
+    return res?.ok ? { result: 'ok', data: await readJson(res) } : FALLBACK;
   } catch {
-    return 'fallback';
+    return FALLBACK;
   } finally {
     clearTimeout(timer);
   }
@@ -68,13 +85,19 @@ export function initForms(utm) {
         utm,
         now: new Date(),
       });
-      const result = await submitForm(form.dataset.endpoint, payload);
+      const { result, data } = await submitForm(form.dataset.endpoint, payload);
       if (button) button.disabled = false;
       track('form-submit', { form: type, result });
       if (result === 'ok') {
         part('fields')?.setAttribute('hidden', '');
         part('fallback')?.setAttribute('hidden', '');
         part('success')?.removeAttribute('hidden');
+        const tg = telegramUrl(form.dataset.bot, data?.tg_code);
+        const tgLink = part('telegram');
+        if (tg && tgLink) {
+          tgLink.href = tg;
+          tgLink.removeAttribute('hidden');
+        }
       } else {
         // Typed values stay in the fields so the visitor can copy them into Telegram.
         part('fallback')?.removeAttribute('hidden');

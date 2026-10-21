@@ -6,16 +6,16 @@
 .field--hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .consent{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--c-ink-muted)}
 .consent a{color:var(--accent)}
-.form__success{font:500 20px var(--font-serif);color:var(--accent)}
+.form__success{display:grid;gap:12px}
+.form__success>p{font:500 20px var(--font-serif);color:var(--accent)}
+.form__calendar{display:flex;flex-wrap:wrap;gap:8px}
 .form__fallback{display:grid;gap:8px}
 .form [hidden]{display:none}
 .form__fields .btn{height:48px;display:flex;align-items:center;justify-content:center}
 .product__actions>.form{grid-column:1/-1;margin-top:0}
-/* Two columns: the webinar's third field (Telegram) shares a row with the button; two-field forms get a full-width button. */
+/* Two columns: the third field (Telegram) shares a row with the button. */
 @media (min-width:640px){
   .form__fields{grid-template-columns:1fr 1fr;align-items:end}
   .form__fields .field input{min-width:0;width:100%}
-  .form__fields .btn{grid-column:1/-1}
-  .form[data-form="webinar"] .form__fields .btn{grid-column:auto}
   .form__fields .consent{order:1;grid-column:1/-1}
 }
