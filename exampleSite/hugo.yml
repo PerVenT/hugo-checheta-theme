@@ -1,6 +1,6 @@
 timeZone: Europe/Kyiv
 baseURL: https://example.org/
-title: Лісові звірі Карпат
+title: Сайт-приклад
 locale: uk
 defaultContentLanguage: uk
 defaultContentLanguageInSubdir: false
@@ -16,7 +16,7 @@ module:
   replacements: "github.com/PerVenT/hugo-checheta-theme -> ../.."
 params:
   description: Клуб для тих, хто любить спостерігати за дикими звірами Карпат, — курси, вебінари, нічні квести й безкоштовні уроки.
-  brand: Лісові звірі Карпат
+  brand: "Лісові звірі Карпат | "
   role: Клуб спостерігачів за звірами
   telegram:
     username: zviri_example

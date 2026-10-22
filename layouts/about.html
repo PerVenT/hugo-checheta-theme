@@ -1,5 +1,5 @@
 {{ define "main" }}
-{{- $name := site.Params.brand | default site.Title -}}
+{{- $name := partial "brand.html" . -}}
 <main class="container page about">
   {{- with .Params.image }}
   <div class="about__media">

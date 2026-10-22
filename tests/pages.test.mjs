@@ -110,6 +110,10 @@ test('contacts page: Telegram, channel and email buttons, then requisites', asyn
   assert.match(html, /<a class="btn btn--block btn--ghost" href="https:\/\/t\.me\/zviri_example_channel"/);
   assert.match(html, /<a class="btn btn--block btn--ghost" href="mailto:hello@example\.org"[^>]*>hello@example\.org<\/a>/);
   assert.match(html, /ФОП Приклад/);
+  // Shortcodes in the page body take email and Telegram from hugo.yml.
+  const prose = html.match(/<div class="prose section">[^]*?<\/div>/)?.[0] ?? '';
+  assert.match(prose, /<a href="mailto:hello@example\.org">hello@example\.org<\/a>/);
+  assert.match(prose, /<a href="https:\/\/t\.me\/zviri_example">@zviri_example<\/a>/);
 });
 
 test('without photos: hero gets top spacing, links profile text is centred', async () => {

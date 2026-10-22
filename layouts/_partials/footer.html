@@ -5,6 +5,6 @@
       {{- range site.Menus.footer }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
       {{- range site.Menus.legal }}<li><a href="{{ .URL }}">{{ .Name }}</a></li>{{ end }}
     </ul>
-    <p class="site-footer__copy">© {{ now.Year }} {{ site.Params.brand | default site.Title }}</p>
+    <p class="site-footer__copy">© {{ now.Year }} {{ partial "brand.html" . }}</p>
   </div>
 </footer>

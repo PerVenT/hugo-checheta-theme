@@ -1,6 +1,6 @@
 {{ define "main" }}
 <main class="links container">
-  {{- $name := site.Params.brand | default site.Title }}
+  {{- $name := partial "brand.html" . }}
   <header class="links__profile">
     {{- with .Params.avatar | default site.Params.avatar }}
     <a class="links__home" href="{{ site.Home.RelPermalink }}" aria-label="{{ i18n "go_home" }}">

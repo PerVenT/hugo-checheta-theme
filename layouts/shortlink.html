@@ -10,7 +10,7 @@
 <html lang="{{ site.Language.Locale }}">
 <head>
 <meta charset="utf-8">
-<title>{{ site.Title }}</title>
+<title>{{ partial "brand.html" . }}</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="{{ $to }}">
 {{- if $track }}
@@ -38,5 +38,5 @@
 <script>location.replace({{ $to }})</script>
 {{- end }}
 </head>
-<body><a href="{{ $to }}">{{ site.Title }}</a></body>
+<body><a href="{{ $to }}">{{ partial "brand.html" . }}</a></body>
 </html>

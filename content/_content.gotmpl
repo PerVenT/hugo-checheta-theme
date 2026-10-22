@@ -5,13 +5,18 @@
   (dict "key" "shortlinks" "prefix" "" "track" false "re" `^/` "hint" "лише сторінки цього сайту, адреса від кореня: /links/?utm_source=…; посилання на інші сайти — в outlinks")
   (dict "key" "outlinks" "prefix" "go/" "track" true "re" `^https?://` "hint" "лише інші сайти, повна адреса https://…; сторінки цього сайту — в shortlinks")
 -}}
+{{- /* /go/telegram/ comes from params.telegram.username unless outlinks sets it. */ -}}
+{{- $outlinks := .Site.Params.outlinks | default dict -}}
+{{- with .Site.Params.telegram.username -}}
+  {{- if not (isset $outlinks "telegram") }}{{ $outlinks = merge (dict "telegram" (printf "https://t.me/%s" .)) $outlinks }}{{ end -}}
+{{- end -}}
 {{- /* /go/ itself is not a page: no list of outlinks anywhere. */ -}}
-{{- with .Site.Params.outlinks -}}
+{{- with $outlinks -}}
   {{- $.AddPage (dict "path" "go" "kind" "section" "title" "go" "sitemap" (dict "disable" true) "build" (dict "list" "never" "render" "never")) -}}
 {{- end -}}
 {{- range $lists -}}
   {{- $l := . -}}
-  {{- range $slug, $to := index $.Site.Params $l.key -}}
+  {{- range $slug, $to := cond (eq $l.key "outlinks") $outlinks (index $.Site.Params $l.key) -}}
     {{- if not (findRE `^[a-z0-9-]+$` $slug) -}}
       {{- errorf "%s: «%s» — лише малі латинські літери, цифри й дефіс" $l.key $slug -}}
     {{- end -}}

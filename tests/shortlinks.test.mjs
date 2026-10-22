@@ -39,6 +39,13 @@ test('outlink lives under /go/, sends the Umami event before leaving and skips b
   assert.match(html, /<noscript><meta http-equiv="refresh" content="0; url=https:\/\/instagram\.com\/zviri_example"><\/noscript>/);
 });
 
+test('/go/telegram/ comes from params.telegram.username without a line in outlinks', async () => {
+  await buildSite();
+  const html = readOut('go/telegram/index.html');
+  assert.match(html, /var to = "https:\/\/t\.me\/zviri_example"/);
+  assert.match(html, /umami\.track\('outlink-click', \{ link: "telegram" \}\)/);
+});
+
 test('redirect pages stay out of the sitemap; robots.txt closes /go/', async () => {
   await buildSite();
   assert.doesNotMatch(readOut('sitemap.xml'), /\/ig\/|\/yt\/|\/go\//);

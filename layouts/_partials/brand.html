@@ -1,0 +1,3 @@
+{{- /* Site name from params.brand (else title), without a trailing separator such as "CHECHETA |". */ -}}
+{{- $name := site.Params.brand | default site.Title | strings.TrimRight " |·" -}}
+{{- return $name -}}

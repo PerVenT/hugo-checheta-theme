@@ -1,0 +1,6 @@
+{{- /* {{< email >}} in page text: mailto link to params.email from hugo.yml. */ -}}
+{{- with site.Params.email -}}
+<a href="mailto:{{ . }}">{{ . }}</a>
+{{- else -}}
+{{- errorf "%s" (i18n "shortcode_no_param" (dict "file" .Page.File.Path "shortcode" "email" "param" "params.email")) -}}
+{{- end -}}

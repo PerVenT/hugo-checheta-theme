@@ -1,4 +1,5 @@
-{{- $title := cond .IsHome site.Title (printf "%s · %s" .Title site.Title) -}}
+{{- $name := partial "brand.html" . -}}
+{{- $title := cond .IsHome $name (printf "%s · %s" .Title $name) -}}
 {{- $desc := or .Description .Params.lead site.Params.description | plainify | truncate 160 -}}
 {{- $img := "" -}}
 {{- /* Link preview: og_image from front matter, else a product's own image cropped to 1200x630

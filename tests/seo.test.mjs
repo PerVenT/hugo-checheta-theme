@@ -63,3 +63,15 @@ test('favicon svg and apple touch icon are linked and built', async () => {
   assert.match(head, /<link rel="apple-touch-icon" href="\/apple-touch-icon\.png">/);
   assert.match(readOut('favicon.svg'), /<svg/);
 });
+
+test('params.brand names the site everywhere: tab title, footer, links page, home hero label with params.role', async () => {
+  await buildSite();
+  const home = readOut('index.html');
+  assert.match(home, /<title>Лісові звірі Карпат<\/title>/);
+  assert.match(readOut('contacts/index.html'), /<title>Контакти · Лісові звірі Карпат<\/title>/);
+  // Without hero.label in front matter the label is brand | role; a trailing "|" in brand is dropped elsewhere.
+  assert.match(home, /<p class="card__label">Лісові звірі Карпат \| Клуб спостерігачів за звірами<\/p>/);
+  assert.match(home, /<p class="site-footer__copy">© \d{4} Лісові звірі Карпат<\/p>/);
+  assert.match(readOut('links/index.html'), /<h1 class="links__name">Лісові звірі Карпат<\/h1>/);
+  assert.doesNotMatch(home, /Сайт-приклад/);
+});

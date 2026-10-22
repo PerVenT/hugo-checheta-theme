@@ -1,0 +1,6 @@
+{{- /* {{< telegram >}} in page text: link to params.telegram.username from hugo.yml. */ -}}
+{{- with site.Params.telegram.username -}}
+<a href="https://t.me/{{ . }}">@{{ . }}</a>
+{{- else -}}
+{{- errorf "%s" (i18n "shortcode_no_param" (dict "file" .Page.File.Path "shortcode" "telegram" "param" "params.telegram.username")) -}}
+{{- end -}}

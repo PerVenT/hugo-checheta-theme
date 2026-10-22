@@ -9,7 +9,10 @@
   </div>
   {{- end }}
   <div class="hero__text">
-    {{- with .label }}<p class="card__label">{{ . }}</p>{{ end }}
+    {{- /* Without hero.label: "brand | role" from hugo.yml. */ -}}
+    {{- $label := .label | default (partial "brand.html" $) -}}
+    {{- if and (not .label) site.Params.role }}{{ $label = printf "%s | %s" $label site.Params.role }}{{ end }}
+    {{- with $label }}<p class="card__label">{{ . }}</p>{{ end }}
     <h1 class="hero__title">{{ .title }}{{ with .accent }} <em>{{ . }}</em>{{ end }}</h1>
     {{- with .cta }}<a class="btn" href="{{ strings.TrimPrefix "/" .url | relURL }}">{{ .label }}</a>{{ end }}
   </div>

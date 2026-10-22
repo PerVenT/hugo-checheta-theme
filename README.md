@@ -54,7 +54,7 @@ git config core.hooksPath .githooks
 | «Дякую» | `layout: thanks` | `kind: payment` або `registration`, `lead`, `cta: {label, url}` (необов'язково); `sitemap: {disable: true}` |
 | Юридична | `layout: legal` | `draft_legal: true` — банер «Чернетка» |
 | Про мене | `layout: about` | `image`, `image_dark`, `lead` |
-| Контакти | `layout: contacts` | `lead`; кнопки з `params.telegram.username`, `params.telegram_channel`, `params.email`; тіло — реквізити |
+| Контакти | `layout: contacts` | `lead`; кнопки з `params.telegram.username`, `params.telegram_channel`, `params.email`; тіло — реквізити, email і Telegram у тексті — шорткодами `{{< email >}}`, `{{< telegram >}}` |
 
 Порядок продуктів на головній, `/products/` і `/links`: спочатку закріплений (`pinned: true` — лише один на сайт, показується навіть після старту, ховається лише `status: close`), далі ті, що ще не стартували, — за `start`, далі без дати — за `weight`.
 
@@ -100,7 +100,7 @@ git config core.hooksPath .githooks
 | `audience[]`, `results[]` | 160 |
 | `testimonials[].name` | 30 |
 | `faq[].q` | 80 |
-| `hero.label` / `hero.title` + `hero.accent` / `hero.cta.label` | 36 / 60 / 32 |
+| `hero.label` (без нього — `params.brand \| params.role`) / `hero.title` + `hero.accent` / `hero.cta.label` | 42 / 60 / 32 |
 | `links[].label` | 32 |
 | `role` (титул під іменем на /links) | 36 |
 

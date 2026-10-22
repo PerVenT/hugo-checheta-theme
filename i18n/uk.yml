@@ -60,6 +60,7 @@ limit_count: "{{ .file }}: «{{ .field }}» — {{ .n }} шт., максимум
 limit_total: "{{ .file }}: «{{ .field }}» — разом {{ .n }} символів, максимум {{ .max }}"
 video_play: Дивитися «{{ .title }}»
 youtube_bad_id: "{{ .file }}: «youtube_id» — не вдалося розпізнати відео «{{ .value }}»"
+shortcode_no_param: "{{ .file }}: шорткод «{{ .shortcode }}» — заповніть {{ .param }} у hugo.yml"
 legal_draft: Чернетка — текст ще має перевірити юрист.
 thanks_write: Написати в Telegram
 thanks_channel: Підписатися на Telegram-канал
