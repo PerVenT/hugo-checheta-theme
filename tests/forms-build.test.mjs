@@ -52,6 +52,14 @@ test('webinar success shows calendar links in UTC with the page duration', async
   assert.match(success, /<a[^>]*data-form-telegram[^>]*hidden/);
 });
 
+test('Telegram button text fits the form: reminders only where there is a date', async () => {
+  await buildSite();
+  const button = (page) => readOut(page).match(/data-form-telegram[^>]*>([^<]*)</)[1];
+  assert.equal(button('products/webinar/index.html'), 'Отримати нагадування в Telegram');
+  assert.equal(button('lessons/urok-1/index.html'), 'Продовжити в Telegram');
+  assert.equal(button('products/game/index.html'), 'Дізнатися першою в Telegram');
+});
+
 test('form carries the bot username for the Telegram button', async () => {
   await buildSite();
   const form = readOut('products/webinar/index.html').match(/<form[^]*?<\/form>/)[0];

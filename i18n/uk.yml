@@ -51,7 +51,9 @@ form_fallback: Не вдалося надіслати форму. Напиши �
 form_fallback_cta: Написати в Telegram
 form_calendar_google: Google Календар
 form_calendar_ics: Додати в календар (.ics)
-form_telegram_cta: Отримати нагадування в Telegram
+form_webinar_telegram_cta: Отримати нагадування в Telegram
+form_lesson_telegram_cta: Продовжити в Telegram
+form_waitlist_telegram_cta: Дізнатися першою в Telegram
 testimonial_alt: Скриншот відгуку
 limit_chars: "{{ .file }}: «{{ .field }}» — {{ .n }} символів, максимум {{ .max }}"
 limit_count: "{{ .file }}: «{{ .field }}» — {{ .n }} шт., максимум {{ .max }}"

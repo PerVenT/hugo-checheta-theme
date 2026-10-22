@@ -18,7 +18,7 @@
   <div class="form__success" data-form-success hidden role="status">
     <p>{{ i18n (printf "form_%s_success" $type) }}</p>
     {{- if and (eq $type "webinar") .product }}{{ partial "calendar-links.html" .product }}{{ end }}
-    <a class="btn btn--block" href="#" data-form-telegram hidden data-umami-event="telegram-reminders">{{ i18n "form_telegram_cta" }}</a>
+    <a class="btn btn--block" href="#" data-form-telegram hidden data-umami-event="telegram-reminders">{{ i18n (printf "form_%s_telegram_cta" $type) }}</a>
   </div>
   <div class="form__fallback" data-form-fallback hidden role="alert">
     <p>{{ i18n "form_fallback" }}</p>
