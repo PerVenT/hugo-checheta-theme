@@ -1,4 +1,33 @@
 export const WIDGET_SRC = 'https://secure.wayforpay.com/server/pay-widget.js?ref=button';
+export const PAY_PAGE = 'https://secure.wayforpay.com/pay';
+
+// A signed order as the form fields of the WayForPay payment page: arrays become name[] fields.
+export function orderFields(order) {
+  const fields = [];
+  for (const [name, value] of Object.entries(order)) {
+    if (Array.isArray(value)) for (const v of value) fields.push([`${name}[]`, String(v)]);
+    else fields.push([name, String(value)]);
+  }
+  fields.push(['merchantTransactionSecureType', 'AUTO']);
+  return fields;
+}
+
+// Opens a signed order on the WayForPay payment page (a POST form) — for when the widget has not loaded yet.
+export function submitOrder(doc, order) {
+  const form = doc.createElement('form');
+  form.method = 'POST';
+  form.action = PAY_PAGE;
+  form.acceptCharset = 'utf-8';
+  for (const [name, value] of orderFields(order)) {
+    const input = doc.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value;
+    form.appendChild(input);
+  }
+  doc.body.appendChild(form);
+  form.submit();
+}
 
 // Opens the WayForPay widget over the page; false when its script is not loaded yet.
 export function openWidget(win, url) {
@@ -46,7 +75,8 @@ export function successTarget(event, url) {
 
 // Pay links with data-wfp-widget: the widget script loads in the background and a click opens the payment
 // over the page. Until it loads (or if it is blocked) the click is a plain link to the same button page.
-// data-checkout: first ask that endpoint for an order carrying the UTM tags, and open the button only if that fails.
+// data-checkout: first ask that endpoint for an order carrying the UTM tags and open it in the widget, or — if the
+// widget is not there yet — on the WayForPay payment page; only without an order is the button opened.
 // data-success of the clicked link: where to go after an approved payment.
 export function initPay(utm = {}) {
   const links = document.querySelectorAll('a[data-wfp-widget]');
@@ -72,18 +102,26 @@ export function initPay(utm = {}) {
   };
   for (const link of links) {
     link.addEventListener('click', async (event) => {
-      if (typeof window.Wayforpay !== 'function') return;
+      const checkout = link.dataset.checkout;
+      if (!checkout && typeof window.Wayforpay !== 'function') return;
       event.preventDefault();
       opened = link;
-      if (!link.dataset.checkout) return openButton(link);
+      if (!checkout) return openButton(link);
       if (link.dataset.busy) return;
       link.dataset.busy = '1';
-      const order = await fetchOrder(window.fetch.bind(window), link.dataset.checkout, link.dataset.product, utm);
+      const order = await fetchOrder(window.fetch.bind(window), checkout, link.dataset.product, utm);
       delete link.dataset.busy;
-      try {
-        if (order && runOrder(window, order, success)) return;
-      } catch {
-        // Fall back to the pay button below.
+      if (order) {
+        try {
+          if (runOrder(window, order, success)) return;
+        } catch {
+          // A broken widget: the payment page below still takes the same order.
+        }
+        try {
+          return submitOrder(document, order);
+        } catch {
+          // Fall back to the pay button below.
+        }
       }
       openButton(link);
     });

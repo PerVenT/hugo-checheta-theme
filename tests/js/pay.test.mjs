@@ -1,8 +1,38 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { openWidget, successTarget, fetchOrder, runOrder } from '../../assets/js/pay.mjs';
+import { openWidget, successTarget, fetchOrder, runOrder, orderFields, submitOrder, PAY_PAGE } from '../../assets/js/pay.mjs';
 
 const order = { orderReference: 'CHK-1', amount: 300, merchantSignature: 'abc' };
+
+test('orderFields: the signed order as form fields for the WayForPay payment page, arrays as name[]', () => {
+  const fields = orderFields({ ...order, productName: ['Тренінг'], productCount: [1], productPrice: [300] });
+  assert.deepEqual(fields, [
+    ['orderReference', 'CHK-1'], ['amount', '300'], ['merchantSignature', 'abc'],
+    ['productName[]', 'Тренінг'], ['productCount[]', '1'], ['productPrice[]', '300'],
+    ['merchantTransactionSecureType', 'AUTO'],
+  ]);
+});
+
+test('submitOrder posts the order to the payment page when the widget is not there yet', () => {
+  const made = [];
+  const el = (tag) => {
+    const node = { tag, children: [], appendChild(c) { this.children.push(c); }, submit() { this.submitted = true; } };
+    made.push(node);
+    return node;
+  };
+  const doc = { createElement: el, body: { appendChild(c) { this.child = c; } } };
+  submitOrder(doc, { orderReference: 'CHK-1', productName: ['T'] });
+  const form = made[0];
+  assert.equal(form.tag, 'form');
+  assert.equal(form.method, 'POST');
+  assert.equal(form.action, PAY_PAGE);
+  assert.equal(form.acceptCharset, 'utf-8');
+  assert.equal(form.submitted, true);
+  assert.equal(doc.body.child, form);
+  assert.deepEqual(form.children.map((i) => [i.type, i.name, i.value]), [
+    ['hidden', 'orderReference', 'CHK-1'], ['hidden', 'productName[]', 'T'], ['hidden', 'merchantTransactionSecureType', 'AUTO'],
+  ]);
+});
 const reply = (status, body) => async () => ({ ok: status < 300, status, json: async () => body });
 
 test('fetchOrder posts the product and UTM, returns the signed order', async () => {
