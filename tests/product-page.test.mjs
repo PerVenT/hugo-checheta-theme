@@ -57,6 +57,12 @@ test('widget mode marks the pay link for the WayForPay widget; link mode does no
   assert.doesNotMatch(buttons(readOut('products/mini/index.html')).pay, /data-wfp-widget/);
 });
 
+test('widget pay link carries the access page from front matter «access»; none without it', async () => {
+  await buildSite();
+  assert.match(buttons(readOut('products/mentorship/index.html')).pay, /data-success="\/thanks-access\/"/);
+  assert.doesNotMatch(buttons(readOut('products/mini/index.html')).pay, /data-success/);
+});
+
 test('checkout mode without api endpoint falls back to link', async () => {
   await buildSite();
   const { pay } = buttons(readOut('products/checkout-fallback/index.html'));
