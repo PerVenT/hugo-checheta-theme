@@ -1,5 +1,15 @@
-{{- /* One lesson: title, lead, lite player and the lesson form. Params: page, single (bool — h1 instead of a linked h2). */ -}}
+{{- /* One lesson: title, lead, lite player, the offer (when set) and the lesson form. Params: page, single (bool — h1 instead of a linked h2).
+     offer: path of a product page; its block with the pay button shows only while the product is open, an unknown path fails the build. */ -}}
 {{- $p := .page -}}
+{{- $offer := false -}}
+{{- with $p.Params.offer -}}
+  {{- $path := . -}}
+  {{- with site.GetPage $path -}}
+    {{- if eq .Params.status "open" }}{{ $offer = . }}{{ end -}}
+  {{- else -}}
+    {{- errorf "%s" (i18n "offer_missing" (dict "file" $p.File.Path "value" $path)) -}}
+  {{- end -}}
+{{- end -}}
 <article class="lesson">
   <header class="lesson__head">
     {{- if .single }}
@@ -10,5 +20,16 @@
     {{- with $p.Params.lead }}<p class="page__lead">{{ . }}</p>{{ end }}
   </header>
   <div class="lesson__video">{{ partial "youtube-lite.html" (dict "page" $p) }}</div>
-  {{ partial "form.html" (dict "form" "lesson" "product" $p "id" ($p.Params.id | default (printf "lesson-%s" $p.File.ContentBaseName))) }}
+  <div class="lesson__side">
+    {{- with $offer }}
+    <aside class="offer">
+      <p class="card__label">{{ i18n "offer_label" }}</p>
+      <h3 class="offer__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      {{- with .Params.lead }}<p class="offer__lead">{{ . }}</p>{{ end }}
+      {{ partial "product/buy.html" . }}
+      <a class="offer__more" href="{{ .RelPermalink }}">{{ i18n "card_more" }}</a>
+    </aside>
+    {{- end }}
+    {{ partial "form.html" (dict "form" "lesson" "product" $p "id" ($p.Params.id | default (printf "lesson-%s" $p.File.ContentBaseName))) }}
+  </div>
 </article>

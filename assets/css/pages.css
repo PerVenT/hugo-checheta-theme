@@ -7,6 +7,11 @@
 .lesson__title{font-size:clamp(26px,5vw,34px)}
 .lesson__title a{text-decoration:none;color:inherit}
 .lesson .page__lead{margin-bottom:12px}
+.offer{margin-top:var(--space-6);padding:var(--space-4);display:grid;gap:10px;border-radius:18px;background:var(--card-bg);border:1px solid var(--card-border)}
+.offer__title{margin:0;font-size:24px}
+.offer__title a{text-decoration:none;color:inherit}
+.offer__lead{margin:0;color:var(--c-ink-muted)}
+.offer__more{justify-self:center;font-size:14px;color:var(--accent)}
 .yt{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:var(--radius-lg);overflow:hidden;background:#000}
 .yt img{width:100%;height:100%;object-fit:cover}
 .yt__play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
@@ -18,12 +23,13 @@
 .thanks{max-width:560px;text-align:center;padding-top:var(--space-10)}
 .thanks__icon{margin:0 auto var(--space-4);border-radius:14px}
 .thanks .prose{margin:0 auto}
+.thanks__video{margin-top:var(--space-6)}
 .thanks__actions{display:grid;gap:10px;margin-top:var(--space-6)}
 .contacts__actions{display:grid;gap:10px;max-width:480px;margin-top:var(--space-4)}
 @media (min-width:960px){
   .lesson{display:grid;grid-template-columns:1.5fr 1fr;gap:0 var(--space-6);align-items:start}
   .lesson__head{grid-column:1/-1}
-  .lesson .form{margin-top:0}
+  .lesson__side>:first-child{margin-top:0}
   .about{display:grid;grid-template-columns:minmax(0,460px) 1fr;gap:var(--space-10);align-items:start}
   .about__media{margin:0}
 }

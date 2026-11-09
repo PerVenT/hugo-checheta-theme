@@ -58,6 +58,8 @@ testimonial_alt: Скриншот відгуку
 limit_chars: "{{ .file }}: «{{ .field }}» — {{ .n }} символів, максимум {{ .max }}"
 limit_count: "{{ .file }}: «{{ .field }}» — {{ .n }} шт., максимум {{ .max }}"
 limit_total: "{{ .file }}: «{{ .field }}» — разом {{ .n }} символів, максимум {{ .max }}"
+offer_label: Наступний крок
+offer_missing: "{{ .file }}: «offer» — немає сторінки «{{ .value }}»"
 video_play: Дивитися «{{ .title }}»
 youtube_bad_id: "{{ .file }}: «youtube_id» — не вдалося розпізнати відео «{{ .value }}»"
 shortcode_no_param: "{{ .file }}: шорткод «{{ .shortcode }}» — заповніть {{ .param }} у hugo.yml"

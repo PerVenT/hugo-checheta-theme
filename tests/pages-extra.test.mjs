@@ -48,6 +48,34 @@ test('lesson page has its own player and form', async () => {
   assert.match(html, /data-form="lesson" data-product="lesson-1"/);
 });
 
+test('lesson with offer: product block with pay button between video and form, on the list and the lesson page', async () => {
+  await buildSite();
+  for (const page of ['lessons/index.html', 'lessons/urok-1/index.html']) {
+    const html = readOut(page);
+    const offer = html.match(/<aside class="offer"[^]*?<\/aside>/)[0];
+    assert.match(offer, /<a href="\/products\/mini\/">Міні-курс «Сліди на снігу»<\/a>/);
+    assert.match(offer, /href="https:\/\/secure\.wayforpay\.com\/button\/b1111111111" data-umami-event="pay-click" data-umami-event-product="slidy-na-snihu"/);
+    assert.ok(html.indexOf('class="offer"') > html.indexOf('class="yt"'));
+    assert.ok(html.indexOf('class="offer"') < html.indexOf('data-form="lesson" data-product="lesson-1"'));
+  }
+  assert.equal([...readOut('lessons/index.html').matchAll(/class="offer"/g)].length, 1);
+});
+
+test('lesson offer: closed product shows no block, unknown path stops the build', () => {
+  const lesson = (offer) => `---\ntitle: X\nid: x\nyoutube_id: M7lc1UVf-VE\noffer: ${offer}\n---\n`;
+  const closed = buildVariant({ content: { 'lessons/x.md': lesson('/products/bare/'), 'products/bare.md': '---\ntitle: B\nid: bare\nstatus: close\n---\n' } });
+  assert.doesNotMatch(closed.read('lessons/x/index.html'), /class="offer"/);
+  closed.cleanup();
+  const { err } = buildVariant({ content: { 'lessons/x.md': lesson('/products/nema/') } });
+  assert.match(err, /«offer» — немає сторінки «\/products\/nema\/»/);
+});
+
+test('thanks page with youtube_id shows the video; without it — none', async () => {
+  await buildSite();
+  assert.match(readOut('thanks-access/index.html'), /<div class="thanks__video"><a class="yt" href="https:\/\/www\.youtube\.com\/watch\?v=aqz-KE-bpKQ"/);
+  assert.doesNotMatch(readOut('thanks-payment/index.html'), /thanks__video/);
+});
+
 test('unrecognisable youtube_id stops the build', () => {
   const { err } = buildVariant({ content: { 'lessons/x.md': '---\ntitle: X\nid: x\nyoutube_id: not a video\n---\n' } });
   assert.match(err, /«youtube_id» — не вдалося розпізнати відео «not a video»/);

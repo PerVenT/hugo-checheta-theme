@@ -18,6 +18,7 @@
   <img class="thanks__icon" src="{{ "favicon.svg" | relURL }}" width="64" height="64" alt="">
   <h1>{{ .Title }}</h1>
   {{- with .Params.lead }}<p class="page__lead">{{ . }}</p>{{ end }}
+  {{- if .Params.youtube_id }}<div class="thanks__video">{{ partial "youtube-lite.html" (dict "page" .) }}</div>{{ end }}
   {{- with .Content }}<div class="prose">{{ . }}</div>{{ end }}
   <div class="thanks__actions">
     {{- with $bot }}
