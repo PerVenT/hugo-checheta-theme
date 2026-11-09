@@ -1,6 +1,7 @@
 {{- /* Main action by status: an open webinar registers, other open products pay; waitlist and closed below.
      payment.mode "widget" opens the WayForPay widget over the page (the link still works without it);
-     "checkout" is used only when site.Params.api.endpoint is set. access (front matter): page the widget goes to after
+     "checkout" (only when site.Params.api.endpoint is set) opens the widget with an order the endpoint signs, carrying the
+     visitor's UTM tags; the button URL stays the fallback. access (front matter): page the widget goes to after
      an approved payment — the widget does not follow the button's return URL itself. */ -}}
 {{- $p := .Params -}}
 {{- if and (eq $p.status "open") (eq $p.product_type "webinar") -}}
@@ -8,10 +9,10 @@
 {{- else if eq $p.status "open" -}}
   {{- with $p.payment -}}
     {{- $checkout := and (eq .mode "checkout") site.Params.api.endpoint -}}
-    {{- $widget := eq .mode "widget" -}}
+    {{- $widget := or (eq .mode "widget") $checkout -}}
     {{- with .url -}}
     <a class="btn btn--block btn--pay" href="{{ . }}" data-umami-event="pay-click" data-umami-event-product="{{ $p.id }}"
-      {{- if $checkout }} data-checkout="{{ site.Params.api.endpoint }}"{{ end }}
+      {{- if $checkout }} data-checkout="{{ site.Params.api.endpoint }}" data-product="{{ $p.id }}"{{ end }}
       {{- if $widget }} data-wfp-widget{{ with $p.access }} data-success="{{ strings.TrimPrefix "/" . | relURL }}"{{ end }}{{ end }}>{{ i18n "pay" }}{{ with $p.price }} · {{ . }} {{ i18n "currency_uah" }}{{ end }}</a>
     {{- end -}}
   {{- end -}}

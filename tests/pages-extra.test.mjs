@@ -76,6 +76,17 @@ test('thanks page with youtube_id shows the video; without it — none', async (
   assert.doesNotMatch(readOut('thanks-payment/index.html'), /thanks__video/);
 });
 
+test('checkout mode with api endpoint: widget link with endpoint, product and access page; button URL stays the fallback', () => {
+  const v = buildVariant({ config: 'params:\n  api:\n    endpoint: https://api.example/checkout\n' });
+  const pay = v.read('products/checkout-fallback/index.html').match(/<a[^>]*data-umami-event="pay-click"[^>]*>/)[0];
+  v.cleanup();
+  assert.match(pay, /href="https:\/\/secure\.wayforpay\.com\/button\/b2222222222"/);
+  assert.match(pay, /data-checkout="https:\/\/api\.example\/checkout"/);
+  assert.match(pay, /data-wfp-widget/);
+  assert.match(pay, /data-product="checkout-fallback"/);
+  assert.match(pay, /data-success="\/thanks-access\/"/);
+});
+
 test('unrecognisable youtube_id stops the build', () => {
   const { err } = buildVariant({ content: { 'lessons/x.md': '---\ntitle: X\nid: x\nyoutube_id: not a video\n---\n' } });
   assert.match(err, /«youtube_id» — не вдалося розпізнати відео «not a video»/);

@@ -13,8 +13,9 @@ function sessionStore() {
   }
 }
 
+const utm = captureUtm(location.search, sessionStore());
 initToggle();
 initCountdowns();
 initYoutube();
-initPay();
-initForms(captureUtm(location.search, sessionStore()));
+initPay(utm);
+initForms(utm);

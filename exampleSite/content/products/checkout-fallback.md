@@ -8,4 +8,5 @@ build:
 payment:
   mode: checkout
   url: https://secure.wayforpay.com/button/b2222222222
+access: /thanks-access/
 ---
